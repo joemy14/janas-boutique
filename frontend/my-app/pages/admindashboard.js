@@ -21,41 +21,29 @@ export default function AdminDashboard() {
   // CHECK ADMIN LOGIN
   // -----------------------
   useEffect(() => {
-    const currentAdmin = JSON.parse(localStorage.getItem("currentUser") || "null");
-    if (!currentAdmin || currentAdmin.is_admin !== 1) {
-      router.push("/adminlogin");
-    } else {
-      setAdmin(currentAdmin);
-    }
-  }, [router]);
+  const currentAdmin = JSON.parse(localStorage.getItem("currentUser") || "null");
+  if (!currentAdmin || currentAdmin.role !== "admin") {
+    router.push("/");
+  } else {
+    setAdmin(currentAdmin);
+  }
+}, [router]);
 
   // -----------------------
   // FETCH STATS FROM BACKEND
   // -----------------------
   useEffect(() => {
     async function fetchStats() {
-      try {
-        const productRes = await fetch(
-          "http://localhost/Backend/CC105Backend/get_total_purchased_products.php"
-        );
-        const orderRes = await fetch(
-          "http://localhost/Backend/CC105Backend/get_total_orders.php"
-        );
-        const earningRes = await fetch(
-          "http://localhost/Backend/CC105Backend/get_total_earnings.php"
-        );
-
-        const productData = await productRes.json();
-        const orderData = await orderRes.json();
-        const earningData = await earningRes.json();
-
-        setTotalProducts(productData.total_products || 0);
-        setTotalOrders(orderData.total_orders || 0);
-        setTotalEarnings(earningData.total_earnings || 0);
-      } catch (err) {
-        console.error("Error fetching stats:", err);
-      }
-    }
+  try {
+    const res = await fetch("http://localhost/janas-boutique/backend/stats.php");
+    const data = await res.json();
+    setTotalProducts(data.total_products);
+    setTotalOrders(data.total_orders);
+    setTotalEarnings(data.total_earnings);
+  } catch (err) {
+    console.error("Error fetching stats:", err);
+  }
+}
 
     fetchStats();
   }, []);
@@ -178,7 +166,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Total Products */}
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Products Purchased</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Active Products</h2>
             <p className="text-4xl font-bold text-[#800000]">{totalProducts}</p>
           </div>
 

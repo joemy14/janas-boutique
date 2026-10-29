@@ -32,7 +32,7 @@ export default function LoginForm({ onClose }) {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost/Backend/cc105backend/login.php", {
+      const res = await fetch("http://localhost/janas-boutique/backend/login.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -41,12 +41,17 @@ export default function LoginForm({ onClose }) {
       const data = await res.json();
 
       if (data.success) {
-        alert("Login successful!");
-        login(data.user); // store user in AuthContext
-        router.push("/profile"); // redirect to dashboard
-      } else {
-        alert(data.message || "Invalid email, password, or account not verified!");
-      }
+  login(data.user);
+  if (data.user.role === "admin") {
+    router.push("/admin");
+  } else if (data.user.role === "staff") {
+    router.push("/admin/orders");
+  } else {
+    router.push("/profile");
+  }
+} else {
+  alert(data.message || "Invalid email or password");
+}
     } catch (err) {
       alert("Error connecting to server: " + err.message);
     }
@@ -177,7 +182,7 @@ export default function LoginForm({ onClose }) {
                 Forgot your password?
               </span>
               <br />
-              {/* ADMIN LOGIN LINK */}
+              
               <span
                 style={{
                   fontSize: "12px",
@@ -187,7 +192,6 @@ export default function LoginForm({ onClose }) {
                   cursor: "pointer",
                   color: "#800000",
                 }}
-                onClick={() => router.push("/adminlogin")}
               >
                 Login as Admin
               </span>
