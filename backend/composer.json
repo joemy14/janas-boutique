@@ -1,0 +1,14 @@
+{
+    "name": "gigabyte/cc105backend",
+    "description": "CC105 Boutique Backend",
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jana",
+            "email": "jana@example.com"
+        }
+    ]
+}

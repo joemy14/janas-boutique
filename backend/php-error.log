@@ -1,0 +1,10 @@
+[28-Nov-2025 02:59:18 Europe/Berlin] PHP Warning:  require(C:\xampp\htdocs\Backend\CC105Backend/vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Backend\CC105Backend\register.php on line 23
+[28-Nov-2025 02:59:18 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\Backend\CC105Backend/vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Backend\CC105Backend\register.php:23
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Backend\CC105Backend\register.php on line 23
+[28-Nov-2025 03:01:25 Europe/Berlin] PHP Warning:  require(C:\xampp\htdocs\Backend\CC105Backend/vendor/autoload.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Backend\CC105Backend\register.php on line 23
+[28-Nov-2025 03:01:25 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\Backend\CC105Backend/vendor/autoload.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Backend\CC105Backend\register.php:23
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Backend\CC105Backend\register.php on line 23
