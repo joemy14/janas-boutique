@@ -21,11 +21,6 @@ export default function App({ Component, pageProps }) {
     if (savedUser) {
       setCurrentUser(savedUser);
       setIsLoggedIn(true);
-
-      const role = savedUser.role?.toLowerCase();
-      if (role === "admin" && !router.pathname.startsWith("/admin") && router.pathname !== "/admindashboard") {
-        router.replace("/admindashboard");
-      }
     }
   }, [router]);
 
