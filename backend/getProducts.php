@@ -2,51 +2,52 @@
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
-// Connect to DB
-$conn = new mysqli("localhost", "root", "", "cc105_boutique");
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "message" => "DB connection failed"]);
+require_once __DIR__ . "/db.php";
+
+// Optional category filter, e.g. ?folder=tops
+$folder = isset($_GET['folder']) ? trim($_GET['folder']) : '';
+
+$sql = "SELECT p.product_id AS id,
+               p.name,
+               p.price,
+               p.image_path AS image_url,
+               p.description AS overview,
+               c.name AS folder,
+               COALESCE(SUM(ps.stock_quantity), 0) AS stock
+          FROM products p
+          JOIN categories c ON c.category_id = p.category_id
+          LEFT JOIN product_sizes ps ON ps.product_id = p.product_id
+         WHERE p.is_active = 1";
+
+if ($folder !== '') {
+    $sql .= " AND c.name = ?";
+}
+$sql .= " GROUP BY p.product_id, p.name, p.price, p.image_path, p.description, c.name
+          ORDER BY p.product_id";
+
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    echo json_encode(["success" => false, "message" => "Prepare failed: " . $conn->error]);
     exit;
 }
-
-// Get folder from query string (e.g., ?folder=tops)
-$folder = isset($_GET['folder']) ? $_GET['folder'] : '';
-
-// Base SQL: include is_deleted = 0 filter
-$sql = "SELECT id, name, price, image_url, overview, features, stylingTip, folder, stock 
-        FROM products 
-        WHERE is_deleted = 0";
-
-if (!empty($folder)) {
-    // Use LIKE to include nested categories
-    $search = "%$folder%";
-    $stmt = $conn->prepare($sql . " AND folder LIKE ?");
-    if (!$stmt) {
-        echo json_encode(["success" => false, "message" => "Prepare failed: " . $conn->error]);
-        exit;
-    }
-    $stmt->bind_param("s", $search);
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    $result = $conn->query($sql);
-    if (!$result) {
-        echo json_encode(["success" => false, "message" => "Query failed: " . $conn->error]);
-        exit;
-    }
+if ($folder !== '') {
+    $stmt->bind_param("s", $folder);
 }
+$stmt->execute();
+$result = $stmt->get_result();
 
 $products = [];
 while ($row = $result->fetch_assoc()) {
-    // If product is a perfume, decode features JSON to prices
-    if (strtolower($row['folder']) === "perfumes" && !empty($row['features'])) {
-        $row['prices'] = json_decode($row['features'], true); // convert features JSON to array
-    }
-
+    $row['id'] = (int)$row['id'];
+    $row['price'] = (float)$row['price'];
+    $row['stock'] = (int)$row['stock'];
+    $row['features'] = null;     // not in the new schema yet
+    $row['stylingTip'] = null;   // not in the new schema yet
     $products[] = $row;
 }
 
 echo json_encode(["success" => true, "products" => $products]);
 
+$stmt->close();
 $conn->close();
 ?>
