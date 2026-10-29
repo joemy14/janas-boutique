@@ -13,11 +13,7 @@ if ($email === '' || $password === '') {
     exit;
 }
 
-$conn = new mysqli("localhost", "root", "", "janas_boutique");
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "message" => "Database connection failed"]);
-    exit;
-}
+require_once __DIR__ . "/db.php";
 
 $stmt = $conn->prepare(
     "SELECT user_id, first_name, last_name, password_hash, role, is_active

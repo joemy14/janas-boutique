@@ -15,7 +15,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL); 
 
-include 'db.php';
+require_once __DIR__ . "/db.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 $email = trim($data['email'] ?? '');
@@ -27,7 +27,7 @@ if (!$email || !$password) {
 }
 
 // Check if user exists
-$stmt = $conn->prepare("SELECT password, is_admin FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT password_hash, role FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -40,13 +40,13 @@ if ($result->num_rows === 0) {
 $user = $result->fetch_assoc();
 
 // Check password
-if (!password_verify($password, $user['password'])) {
+if (!password_verify($password, $user['password_hash'])) {
     echo json_encode(["success" => false, "message" => "Invalid email or password"]);
     exit;
 }
 
 // Check if admin
-if ($user['is_admin'] != 1) {
+if ($user['role'] !== 'admin') {
     echo json_encode(["success" => false, "message" => "Access denied: not an admin"]);
     exit;
 }

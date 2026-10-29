@@ -20,11 +20,7 @@ if (!$data) {
     exit;
 }
 
-$conn = new mysqli("localhost", "root", "", "cc105_boutique");
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "message" => "DB connection failed"]);
-    exit;
-}
+require_once __DIR__ . "/db.php";
 
 // Validate required fields (exclude image_url)
 $required = ['id', 'name', 'price', 'overview', 'features', 'stylingTip', 'folder'];
@@ -90,7 +86,7 @@ if ($stock !== null) {
     $types .= "i";
 }
 
-$sql .= " WHERE id=?";
+$sql .= " WHERE product_id=?";
 $params[] = $id;
 $types .= "i";
 

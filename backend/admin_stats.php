@@ -2,17 +2,7 @@
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
-$host = "localhost";
-$user = "root";
-$pass = "";
-$dbname = "cc105_boutique";
-
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-if ($conn->connect_error) {
-    echo json_encode(["error" => "DB connection failed"]);
-    exit();
-}
+require_once __DIR__ . "/db.php";
 
 // Total Products
 $products = $conn->query("SELECT COUNT(*) AS total FROM products");

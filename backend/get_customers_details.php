@@ -2,14 +2,10 @@
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
-$conn = new mysqli("localhost", "root", "", "cc105_boutique");
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'DB connection failed']);
-    exit();
-}
+require_once __DIR__ . "/db.php";
 
 // Fetch all customers (non-admins)
-$sql = "SELECT id, first_name, last_name, email FROM users WHERE is_admin = 0 ORDER BY id DESC";
+$sql = "SELECT user_id AS id, first_name, last_name, email FROM users WHERE role = 'customer' ORDER BY user_id DESC";
 $result = $conn->query($sql);
 
 if (!$result) {

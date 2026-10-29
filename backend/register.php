@@ -26,14 +26,10 @@ try {
     $password  = $data['password'] ?? '';
 
     // Connect to DB
-    $conn = new mysqli("localhost", "root", "", "cc105_boutique");
-    if ($conn->connect_error) {
-        echo json_encode(["success" => false, "message" => "DB Connection Failed: " . $conn->connect_error]);
-        exit;
-    }
+    require_once __DIR__ . "/db.php";
 
     // Check for duplicate email
-    $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT user_id FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
@@ -46,7 +42,7 @@ try {
     // Insert new user
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password_hash, role) VALUES (?, ?, ?, ?, 'customer')");
     if (!$stmt) {
         echo json_encode(["success" => false, "message" => "SQL Error: " . $conn->error]);
         exit;

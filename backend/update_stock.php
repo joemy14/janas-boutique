@@ -14,11 +14,7 @@ if (!$product_id || $new_stock === null) {
     exit();
 }
 
-$conn = new mysqli("localhost", "root", "", "cc105_boutique");
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'DB connection failed']);
-    exit();
-}
+require_once __DIR__ . "/db.php";
 
 // Update stock
 $stmt = $conn->prepare("UPDATE products SET stock=? WHERE id=?");

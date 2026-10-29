@@ -2,11 +2,7 @@
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 
-$conn = new mysqli("localhost", "root", "", "janas_boutique");
-if ($conn->connect_error) {
-    echo json_encode(["error" => "DB connection failed"]);
-    exit;
-}
+require_once __DIR__ . "/db.php";
 
 $products = $conn->query("SELECT COUNT(*) AS n FROM products WHERE is_active = 1")->fetch_assoc()['n'];
 $orders   = $conn->query("SELECT COUNT(*) AS n FROM orders WHERE status <> 'cancelled'")->fetch_assoc()['n'];

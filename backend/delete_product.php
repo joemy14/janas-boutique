@@ -23,11 +23,11 @@ try {
     $id = intval($data['id']);
     if ($id <= 0) throw new Exception("Invalid product ID");
 
-    $conn = new mysqli("localhost", "root", "", "cc105_boutique");
-    if ($conn->connect_error) throw new Exception("Database connection failed");
+    require_once __DIR__ . "/db.php";
+    if (!$conn) throw new Exception("Database connection failed");
 
     // Fetch product image
-    $stmt = $conn->prepare("SELECT image_url FROM products WHERE id = ?");
+    $stmt = $conn->prepare("SELECT image_path AS image_url FROM products WHERE product_id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -43,7 +43,7 @@ try {
     }
 
     // SOFT DELETE: DO NOT DELETE ROW (to avoid foreign key errors)
-    $stmt = $conn->prepare("UPDATE products SET is_deleted = 1 WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE products SET is_active = 0 WHERE product_id = ?");
     $stmt->bind_param("i", $id);
 
     if (!$stmt->execute()) throw new Exception($stmt->error);

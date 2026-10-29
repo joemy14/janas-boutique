@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 // --- Include DB ---
-include 'db.php';
+require_once __DIR__ . "/db.php";
 
 // --- Get POST Data ---
 $data = json_decode(file_get_contents("php://input"), true);
@@ -59,7 +59,7 @@ $email = $row['email'];
 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
 
 // --- Update user's password ---
-$stmt = $conn->prepare("UPDATE users SET password = ? WHERE email = ?");
+$stmt = $conn->prepare("UPDATE users SET password_hash = ? WHERE email = ?");
 $stmt->bind_param("ss", $hashedPassword, $email);
 if (!$stmt->execute()) {
     echo json_encode(["success" => false, "message" => "Failed to update password"]);

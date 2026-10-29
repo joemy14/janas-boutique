@@ -9,14 +9,10 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
 // Base URL of your backend (adjust if needed)
-$backendURL = "http://127.0.0.1/Backend/CC105Backend/";
+$backendURL = "http://localhost/janas-boutique/backend/";
 
 // Connect to DB
-$conn = new mysqli("localhost", "root", "", "cc105_boutique");
-if ($conn->connect_error) {
-    echo json_encode(["success" => false, "message" => "DB connection failed: " . $conn->connect_error]);
-    exit;
-}
+require_once __DIR__ . "/db.php";
 
 // Debug: show which DB we are connected to
 $dbName = $conn->query("SELECT DATABASE()")->fetch_row()[0];
