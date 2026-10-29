@@ -1,4 +1,4 @@
-// pages/admin/orders.js
+﻿// pages/admin/orders.js
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { BsPerson } from "react-icons/bs";
@@ -17,7 +17,7 @@ export default function AdminOrders() {
   // -----------------------
   useEffect(() => {
     const currentAdmin = JSON.parse(localStorage.getItem("currentUser") || "null");
-    if (!currentAdmin || currentAdmin.is_admin !== 1) {
+    if (!currentAdmin || (currentAdmin.role !== "staff" && currentAdmin.role !== "admin")) {
       router.push("/adminlogin");
     } else {
       setAdmin(currentAdmin);
@@ -30,7 +30,7 @@ export default function AdminOrders() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const res = await fetch("http://localhost/Backend/CC105Backend/get_orders.php");
+        const res = await fetch("http://localhost/janas-boutique/backend/get_orders.php");
         if (!res.ok) throw new Error("Failed to fetch orders");
         const data = await res.json();
         setOrders(data.orders || []);
@@ -140,7 +140,7 @@ export default function AdminOrders() {
                           {order.products.map((product) => (
                             <div key={product.id} className="flex items-center gap-2">
                               <img
-  src={`http://localhost/Backend/CC105Backend/${product.image}`}
+  src={`http://localhost/janas-boutique/backend/${product.image}`}
   alt={product.name}
   className="w-10 h-10 object-cover rounded"
 />

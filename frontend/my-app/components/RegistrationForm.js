@@ -1,4 +1,4 @@
-// components/RegistrationForm.js
+﻿// components/RegistrationForm.js
 import { useState, useEffect } from "react";
 
 export default function RegistrationForm({ onClose }) {
@@ -43,7 +43,7 @@ export default function RegistrationForm({ onClose }) {
     }
 
     try {
-      const res = await fetch("http://localhost/Backend/CC105Backend/register.php", {
+      const res = await fetch("http://localhost/janas-boutique/backend/register.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

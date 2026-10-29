@@ -1,4 +1,4 @@
-// pages/adminforgotpassword.js
+﻿// pages/adminforgotpassword.js
 import { useState, useEffect } from "react";
 
 export default function AdminForgotPassword() {
@@ -21,7 +21,7 @@ export default function AdminForgotPassword() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost/Backend/cc105backend/forgot_password.php", {
+      const res = await fetch("http://localhost/janas-boutique/backend/forgot_password.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+﻿import { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { CartContext } from "../pages/_app";
 import Image from "next/image";
@@ -82,7 +82,7 @@ export default function Checkout() {
 
   const sendReceipt = async (order) => {
   try {
-    const res = await fetch("http://localhost/Backend/cc105backend/send_receipt.php", {
+    const res = await fetch("http://localhost/janas-boutique/backend/send_receipt.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),
@@ -99,8 +99,8 @@ export default function Checkout() {
 
 const processOrder = async () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
-  if (!currentUser.email) {
-    setAlert("You must be logged in to place an order.");
+  if (!currentUser.email || currentUser.role !== "customer") {
+    setAlert("You must be logged in as a customer to place an order.");
     return;
   }
 
@@ -152,7 +152,7 @@ if (rememberMe) {
   setIsProcessing(true);
 
   try {
-    const res = await fetch("http://localhost/Backend/cc105backend/checkout.php", {
+    const res = await fetch("http://localhost/janas-boutique/backend/checkout.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),
@@ -200,7 +200,7 @@ await sendReceipt(order);
     setIsProcessing(true);
     try {
       const res = await fetch(
-        "http://localhost/Backend/cc105backend/pay_gcash.php",
+        "http://localhost/janas-boutique/backend/pay_gcash.php",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -15,7 +15,7 @@ export default function Orders() {
   // Load current user
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
-    if (!currentUser) {
+    if (!currentUser || currentUser.role !== "customer") {
       router.push("/");
     } else {
       setUser(currentUser);

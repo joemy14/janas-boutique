@@ -1,4 +1,4 @@
-// components/ForgotPasswordForm.js
+﻿// components/ForgotPasswordForm.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -31,7 +31,7 @@ export default function ForgotPasswordForm({ onClose }) {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost/Backend/cc105backend/forgot_password.php", {
+      const res = await fetch("http://localhost/janas-boutique/backend/forgot_password.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

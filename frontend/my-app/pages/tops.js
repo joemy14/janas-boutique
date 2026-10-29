@@ -1,4 +1,4 @@
-// pages/tops.js
+﻿// pages/tops.js
 import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
@@ -16,7 +16,7 @@ useEffect(() => {
     try {
       // Use 127.0.0.1 instead of localhost for better compatibility
       const res = await fetch(
-        "http://127.0.0.1/Backend/CC105Backend/getProducts.php?folder=tops"
+        "http://localhost/janas-boutique/backend/getProducts.php?folder=tops"
       );
 
       // Check if response is ok

@@ -1,4 +1,4 @@
-// pages/admin/customers.js
+﻿// pages/admin/customers.js
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { BsPerson } from "react-icons/bs";
@@ -18,7 +18,7 @@ export default function AdminCustomers() {
   // -----------------------
   useEffect(() => {
     const currentAdmin = JSON.parse(localStorage.getItem("currentUser") || "null");
-    if (!currentAdmin || currentAdmin.is_admin !== 1) {
+    if (!currentAdmin || currentAdmin.role !== "admin") {
       router.push("/adminlogin");
     } else {
       setAdmin(currentAdmin);
@@ -31,7 +31,7 @@ export default function AdminCustomers() {
   useEffect(() => {
   async function fetchCustomers() {
     try {
-      const res = await fetch("http://localhost/Backend/CC105Backend/get_customers_details.php");
+      const res = await fetch("http://localhost/janas-boutique/backend/get_customers_details.php");
       const text = await res.text();
       console.log("RAW RESPONSE:", text); // <--- see what PHP actually returns
       const data = JSON.parse(text);

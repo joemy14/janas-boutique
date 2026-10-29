@@ -1,4 +1,4 @@
-// pages/bottoms.js
+﻿// pages/bottoms.js
 import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
@@ -16,7 +16,7 @@ export default function Bottoms() {
     try {
       // Use 127.0.0.1 instead of localhost for Next.js reliability
       const res = await fetch(
-        "http://127.0.0.1/Backend/CC105Backend/getProducts.php?folder=bottoms"
+        "http://localhost/janas-boutique/backend/getProducts.php?folder=bottoms"
       );
 
       // Check HTTP response

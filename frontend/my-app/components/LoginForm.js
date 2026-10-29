@@ -167,34 +167,7 @@ export default function LoginForm({ onClose }) {
               >
                 Sign up
               </span>
-              <br />
-              <span
-                style={{
-                  fontSize: "12px",
-                  marginTop: "5px",
-                  display: "inline-block",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                  color: "#800000",
-                }}
-                onClick={() => router.push("/forgotpassword")}
-              >
-                Forgot your password?
-              </span>
-              <br />
               
-              <span
-                style={{
-                  fontSize: "12px",
-                  marginTop: "5px",
-                  display: "inline-block",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                  color: "#800000",
-                }}
-              >
-                Login as Admin
-              </span>
             </p>
       </div>
     </div>

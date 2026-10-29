@@ -217,7 +217,7 @@ export default function QuickViewModal({ product, onClose, currentUser }) {
           </div>
 
           {/* Actions */}
-          {!currentUser?.is_admin && (
+          {currentUser?.role !== "admin" && (
             <div className="flex gap-3">
               <button
                 className={`bg-black text-white px-5 py-2 rounded cursor-pointer ${product.stock === 0 ? "bg-gray-400 cursor-not-allowed" : ""}`}

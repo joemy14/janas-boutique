@@ -1,4 +1,4 @@
-// pages/dresses.js
+﻿// pages/dresses.js
 import { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
@@ -16,7 +16,7 @@ export default function Dresses() {
     try {
       // Use 127.0.0.1 for better Next.js compatibility
       const res = await fetch(
-        "http://127.0.0.1/Backend/CC105Backend/getProducts.php?folder=dresses"
+        "http://localhost/janas-boutique/backend/getProducts.php?folder=dresses"
       );
 
       // Check HTTP response

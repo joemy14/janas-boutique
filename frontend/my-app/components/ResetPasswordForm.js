@@ -1,4 +1,4 @@
-// components/ResetPasswordForm.js
+﻿// components/ResetPasswordForm.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -41,7 +41,7 @@ export default function ResetPasswordForm() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost/Backend/cc105backend/reset_password.php", {
+      const res = await fetch("http://localhost/janas-boutique/backend/reset_password.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token, password }),

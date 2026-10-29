@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AiOutlineArrowLeft } from "react-icons/ai";
@@ -16,7 +16,7 @@ export default function CustomerProfile() {
 
     async function fetchCustomer() {
       try {
-        const res = await fetch(`http://localhost/Backend/CC105Backend/get_customers_orders.php?id=${id}`);
+        const res = await fetch(`http://localhost/janas-boutique/backend/get_customers_orders.php?id=${id}`);
 const data = await res.json();
 
 if (!res.ok || !data.success) throw new Error(data.message || "Failed to fetch customer");

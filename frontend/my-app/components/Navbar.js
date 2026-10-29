@@ -77,7 +77,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
       return;
     }
 
-    const isAdmin = currentUser?.is_admin === 1;
+    const isAdmin = currentUser?.role === "admin";
     if (isAdmin) {
       router.push("/admindashboard");
     } else {
@@ -86,7 +86,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
   };
 
   const handleHomeClick = () => {
-    const isAdmin = currentUser?.is_admin === 1;
+    const isAdmin = currentUser?.role === "admin";
     if (isAdmin) {
       router.push("/admindashboard");
     } else {
@@ -236,7 +236,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
           />
 
           {/* Cart → ONLY show if NOT admin */}
-          {!currentUser?.is_admin && (
+          {currentUser?.role !== "admin" && (
             <div className="relative cursor-pointer" onClick={() => setIsCartOpen(true)}>
               <FaShoppingCart size={28} />
               {cartItems.length > 0 && (
@@ -250,7 +250,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
       </div>
 
       {/* Cart Sidebar */}
-      {isCartOpen && !currentUser?.is_admin && (
+      {isCartOpen && currentUser?.role !== "admin" && (
         <CartSidebar
           cartItems={cartItems}
           onClose={() => setIsCartOpen(false)}

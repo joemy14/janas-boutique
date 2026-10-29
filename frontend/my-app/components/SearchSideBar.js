@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
@@ -16,7 +16,7 @@ export default function SearchSidebar({ onClose }) {
     setIsVisible(true);
 
     // Fetch products from backend
-    fetch("http://localhost/Backend/CC105Backend/getProducts.php")
+    fetch("http://localhost/janas-boutique/backend/getProducts.php")
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched products:", data);
@@ -66,7 +66,7 @@ export default function SearchSidebar({ onClose }) {
     const folderPath = product.folder.trim().replace(/\s*>\s*/g, "/");
     const fileName = product.image_url.split("/").pop();
 
-    return `http://localhost/Backend/CC105Backend/images/${folderPath}/${fileName}`;
+    return `http://localhost/janas-boutique/backend/images/${folderPath}/${fileName}`;
   };
 
   return (

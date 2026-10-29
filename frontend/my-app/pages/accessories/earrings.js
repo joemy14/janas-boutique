@@ -1,4 +1,4 @@
-// pages/accessories/earrings.js
+﻿// pages/accessories/earrings.js
 import { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import ProductCard from "../../components/ProductCard";
@@ -16,7 +16,7 @@ export default function Earrings() {
     try {
       // Use 127.0.0.1 instead of localhost for better compatibility
       const res = await fetch(
-        "http://127.0.0.1/Backend/CC105Backend/getProducts.php?folder=earrings"
+        "http://localhost/janas-boutique/backend/getProducts.php?folder=earrings"
       );
 
       // Check if response is ok
