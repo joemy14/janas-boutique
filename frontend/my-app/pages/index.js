@@ -164,7 +164,7 @@ export default function Home({ cartItems, setCartItems }) {
     {/* About / Brand (Left) */}
     <div className="flex flex-col items-start md:items-start justify-center text-left">
       <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-3 text-white">
-        Jana's Boutique
+        Jana&apos;s Boutique
       </h3>
       <p className="text-sm md:text-base text-white/90 leading-relaxed">
         Timeless elegance and curated fashion pieces. Stay stylish, always.
@@ -206,7 +206,7 @@ export default function Home({ cartItems, setCartItems }) {
 
   {/* Bottom copyright */}
   <div className="mt-10 text-center text-sm text-white/80 font-serif">
-    © {new Date().getFullYear()} Jana's Boutique — All rights reserved.
+    © {new Date().getFullYear()} Jana&apos;s Boutique — All rights reserved.
   </div>
 </footer>
 

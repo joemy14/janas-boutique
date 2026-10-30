@@ -498,7 +498,7 @@ await sendReceipt(order);
           <div className="bg-white shadow-lg overflow-hidden">
             <div className="bg-black text-white p-4 flex flex-col items-center space-y-1">
               <h2 className="text-xl font-normal">Pay with GCash</h2>
-              <span className="text-sm font-normal">Jana's Boutique | janas.work.ph</span>
+              <span className="text-sm font-normal">Jana&apos;s Boutique | janas.work.ph</span>
             </div>
 
             <div className="p-6 space-y-4 text-center text-black">

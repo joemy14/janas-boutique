@@ -6,6 +6,7 @@ import SearchSideBar from "./SearchSideBar";
 import { AuthContext } from "@/pages/_app";
 import { FaShoppingCart, FaUserCircle, FaChevronDown, FaSearch } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
   const router = useRouter();
@@ -134,12 +135,12 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
           className="flex gap-8 mx-auto text-xl"
           style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
         >
-          <a href="/tops" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
+          <Link href="/tops" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
             Tops
-          </a>
-          <a href="/bottoms" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
+          </Link>
+          <Link href="/bottoms" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
             Bottoms
-          </a>
+          </Link>
 
           {/* Shoes Dropdown */}
           <div
@@ -222,12 +223,12 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
           </div>
 
           {/* More main links */}
-          <a href="/dresses" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
+          <Link href="/dresses" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
             Dresses
-          </a>
-          <a href="/perfumes" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
+          </Link>
+          <Link href="/perfumes" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
             Perfumes
-          </a>
+          </Link>
         </div>
 
         {/* RIGHT SIDE → Profile & Cart */}

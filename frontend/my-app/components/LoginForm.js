@@ -157,7 +157,7 @@ export default function LoginForm({ onClose }) {
                 fontSize: "14px",
               }}
             >
-              Don't have an account yet?{" "}
+              Don&apos;t have an account yet?{" "}
               <span
                 style={{
                   textDecoration: "underline",
