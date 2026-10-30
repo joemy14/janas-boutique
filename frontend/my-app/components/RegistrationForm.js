@@ -1,4 +1,4 @@
-﻿// components/RegistrationForm.js
+// components/RegistrationForm.js
 import { useState, useEffect } from "react";
 
 export default function RegistrationForm({ onClose }) {
@@ -199,7 +199,7 @@ export default function RegistrationForm({ onClose }) {
               padding: "10px",
               borderRadius: "5px",
               border: "none",
-              backgroundColor: "#800000",
+              backgroundColor: "#8B2A3C",
               color: "#fff",
               cursor: "pointer",
             }}
@@ -221,7 +221,7 @@ export default function RegistrationForm({ onClose }) {
             style={{
               textDecoration: "underline",
               cursor: "pointer",
-              color: "#800000",
+              color: "#8B2A3C",
             }}
             onClick={() => onClose && onClose("switch-to-login")}
           >

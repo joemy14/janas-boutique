@@ -1,4 +1,4 @@
-﻿// components/ForgotPasswordForm.js
+// components/ForgotPasswordForm.js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -115,7 +115,7 @@ export default function ForgotPasswordForm({ onClose }) {
               padding: "10px",
               borderRadius: "5px",
               border: "none",
-              backgroundColor: "#800000",
+              backgroundColor: "#8B2A3C",
               color: "#fff",
               cursor: "pointer",
             }}

@@ -167,19 +167,19 @@ export default function AdminDashboard() {
           {/* Total Products */}
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Active Products</h2>
-            <p className="text-4xl font-bold text-[#800000]">{totalProducts}</p>
+            <p className="text-4xl font-bold text-[#8B2A3C]">{totalProducts}</p>
           </div>
 
           {/* Total Orders */}
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Total Orders</h2>
-            <p className="text-4xl font-bold text-[#800000]">{totalOrders}</p>
+            <p className="text-4xl font-bold text-[#8B2A3C]">{totalOrders}</p>
           </div>
 
           {/* Total Earnings */}
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Total Earnings</h2>
-            <p className="text-4xl font-bold text-[#800000]">₱{totalEarnings}</p>
+            <p className="text-4xl font-bold text-[#8B2A3C]">₱{totalEarnings}</p>
           </div>
         </div>
       </main>

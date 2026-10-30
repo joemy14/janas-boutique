@@ -1,4 +1,4 @@
-﻿// pages/adminforgotpassword.js
+// pages/adminforgotpassword.js
 import { useState, useEffect } from "react";
 
 export default function AdminForgotPassword() {
@@ -98,7 +98,7 @@ export default function AdminForgotPassword() {
             padding: "10px",
             borderRadius: "5px",
             border: "none",
-            backgroundColor: "#800000",
+            backgroundColor: "#8B2A3C",
             color: "#fff",
             cursor: "pointer",
           }}

@@ -138,7 +138,7 @@ export default function LoginForm({ onClose }) {
               padding: "10px",
               borderRadius: "5px",
               border: "none",
-              backgroundColor: "#800000",
+              backgroundColor: "#8B2A3C",
               color: "#fff",
               fontWeight: "normal",
               cursor: "pointer",
@@ -161,7 +161,7 @@ export default function LoginForm({ onClose }) {
                 style={{
                   textDecoration: "underline",
                   cursor: "pointer",
-                  color: "#800000",
+                  color: "#8B2A3C",
                 }}
                 onClick={() => onClose && onClose()}
               >

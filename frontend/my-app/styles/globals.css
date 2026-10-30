@@ -1,26 +1,20 @@
 @import "tailwindcss";
 
-:root { 
-  --background: #ffffff; 
-  --foreground: #171717; 
+/* ── Design tokens ──────────────────────────────────────── */
+:root {
+  --background: #FAF8F5;   /* cream */
+  --foreground: #1A1A1A;   /* near-black */
+  --accent:     #8B2A3C;   /* burgundy – buttons, headings */
+  --muted:      #6B6B6B;   /* muted text */
+  --border:     #E5E0DA;   /* borders */
 }
 
-:root inline { 
-  --color-background: var(--background); 
-  --color-foreground: var(--foreground); 
-  --font-sans: var(--font-geist-sans); 
-  --font-mono: var(--font-geist-mono); 
-}
-
-@media (prefers-color-scheme: dark) { 
-  :root { --background: #DFD3C3; 
-          --foreground: #ededed; } 
-} 
-
-body { 
-  background: var(--background); 
-  color: var(--foreground); 
-  font-family: Arial, Helvetica, sans-serif;
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .nav-link { 
@@ -118,7 +112,7 @@ body {
   text-decoration: none;
   padding: 2px 4px;
   position: relative;
-  font-family: "Times New Roman", Times, serif;  /* NEW font */
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
 }
 
 .nav-link::after {
@@ -163,11 +157,5 @@ body {
 
 /* globals.css or any main CSS file */
 .font-serif {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
 }
-
-
-
-
-
-
