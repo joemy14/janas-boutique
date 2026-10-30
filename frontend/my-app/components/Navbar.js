@@ -6,7 +6,6 @@ import SearchSideBar from "./SearchSideBar";
 import { AuthContext } from "@/pages/_app";
 import { FaShoppingCart, FaUserCircle, FaChevronDown, FaSearch } from "react-icons/fa";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
   const router = useRouter();
