@@ -18,7 +18,7 @@ export default function AdminOrders() {
   useEffect(() => {
     const currentAdmin = JSON.parse(localStorage.getItem("currentUser") || "null");
     if (!currentAdmin || (currentAdmin.role !== "staff" && currentAdmin.role !== "admin")) {
-      router.push("/adminlogin");
+      router.push("/auth");
     } else {
       setAdmin(currentAdmin);
     }
@@ -95,7 +95,7 @@ export default function AdminOrders() {
                   <BsPerson size={18} className="text-gray-800" />
                   <span className="text-black font-normal text-sm tracking-tight">{admin?.email}</span>
                 </div>
-                <button onClick={() => { localStorage.removeItem("currentUser"); router.push("/adminlogin"); }} className="text-left text-black font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition">Sign out</button>
+                <button onClick={() => { localStorage.removeItem("currentUser"); router.push("/auth"); }} className="text-left text-black font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition">Sign out</button>
               </div>
             )}
           </div>

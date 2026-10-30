@@ -142,7 +142,7 @@ export default function AdminDashboard() {
                 <button
                   onClick={() => {
                     localStorage.removeItem("currentUser");
-                    router.push("/adminlogin");
+                    router.push("/auth");
                   }}
                   className="text-left text-black font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition cursor pointer"
                 >

@@ -43,7 +43,7 @@ export default function LoginForm({ onClose }) {
       if (data.success) {
   login(data.user);
   if (data.user.role === "admin") {
-    router.push("/admin");
+    router.push("/admindashboard");
   } else if (data.user.role === "staff") {
     router.push("/admin/orders");
   } else {

@@ -19,7 +19,7 @@ export default function AdminCustomers() {
   useEffect(() => {
     const currentAdmin = JSON.parse(localStorage.getItem("currentUser") || "null");
     if (!currentAdmin || currentAdmin.role !== "admin") {
-      router.push("/adminlogin");
+      router.push("/auth");
     } else {
       setAdmin(currentAdmin);
     }
@@ -139,7 +139,7 @@ export default function AdminCustomers() {
                 <button
                   onClick={() => {
                     localStorage.removeItem("currentUser");
-                    router.push("/adminlogin");
+                    router.push("/auth");
                   }}
                   className="text-left text-black font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition cursor-pointer"
                 >
