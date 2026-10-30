@@ -132,7 +132,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
         {/* CENTER → Nav Links */}
         <div
           className="flex gap-8 mx-auto text-xl"
-          style={{ fontFamily: 'Playfair Display', 'Times New Roman', Times, serif }}
+          style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
         >
           <a href="/tops" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
             Tops
@@ -150,7 +150,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
             <button
               className="relative flex items-center gap-1 hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
               onClick={handleToggleDropdown}
-              style={{ fontFamily: 'Playfair Display', 'Times New Roman', Times, serif }}
+              style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
             >
               Shoes
               <FaChevronDown
@@ -187,7 +187,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
             <button
               className="relative flex items-center gap-1 hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
               onClick={handleToggleAccessoriesDropdown}
-              style={{ fontFamily: 'Playfair Display', 'Times New Roman', Times, serif }}
+              style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
             >
               Accessories
               <FaChevronDown
