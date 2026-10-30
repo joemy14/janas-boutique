@@ -72,16 +72,20 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
 
   // ✅ Profile icon click logic
   const handleProfileClick = () => {
+    // Read currentUser from localStorage to avoid relying on AuthContext
+    const storedUser = typeof window !== "undefined" ? localStorage.getItem('currentUser') : null;
+    const currentUser = storedUser ? JSON.parse(storedUser) : null;
     if (!currentUser) {
-      router.push("/auth");
+      router.push('/auth');
       return;
     }
-
-    const isAdmin = currentUser?.role === "admin";
-    if (isAdmin) {
-      router.push("/admindashboard");
+    const role = currentUser.role;
+    if (role === 'admin') {
+      router.push('/admindashboard');
+    } else if (role === 'staff') {
+      router.push('/admin/orders');
     } else {
-      router.push("/profile");
+      router.push('/profile');
     }
   };
 
