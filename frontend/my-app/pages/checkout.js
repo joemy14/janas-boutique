@@ -82,7 +82,7 @@ export default function Checkout() {
 
   const sendReceipt = async (order) => {
   try {
-    const res = await fetch("http://localhost/janas-boutique/backend/send_receipt.php", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/send_receipt.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),
@@ -152,7 +152,7 @@ if (rememberMe) {
   setIsProcessing(true);
 
   try {
-    const res = await fetch("http://localhost/janas-boutique/backend/checkout.php", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),
@@ -200,7 +200,7 @@ await sendReceipt(order);
     setIsProcessing(true);
     try {
       const res = await fetch(
-        "http://localhost/janas-boutique/backend/pay_gcash.php",
+        `${process.env.NEXT_PUBLIC_API_URL}/pay_gcash.php`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -51,7 +51,7 @@
     useEffect(() => {
       async function fetchProducts() {
         try {
-          const res = await fetch("http://localhost/janas-boutique/backend/getProducts.php");
+          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getProducts.php`);
           const data = await res.json();
           if (data.success) setProducts(data.products);
         } catch (err) {
@@ -117,7 +117,7 @@
       };
 
       try {
-        const res = await fetch("http://localhost/janas-boutique/backend/update_product.php", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/update_product.php`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -136,7 +136,7 @@
           alert("Product updated successfully!");
           setEditProduct(null);
           // Refresh
-          const refreshed = await fetch("http://localhost/janas-boutique/backend/getProducts.php").then(r => r.json());
+          const refreshed = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getProducts.php`).then(r => r.json());
           if (refreshed.success) setProducts(refreshed.products);
         } else {
           alert("Update failed: " + data.message);
@@ -160,7 +160,7 @@
       formData.append("image", newProduct.image);
 
       try {
-        const res = await fetch("http://localhost/janas-boutique/backend/add_product.php", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/add_product.php`, {
           method: "POST",
           body: formData,
         });
@@ -178,7 +178,7 @@
             image: null,
             stock: "",
           });
-          const refreshed = await fetch("http://localhost/janas-boutique/backend/getProducts.php").then(r => r.json());
+          const refreshed = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getProducts.php`).then(r => r.json());
           if (refreshed.success) setProducts(refreshed.products);
         } else {
           alert("Add failed: " + data.message);
@@ -197,7 +197,7 @@
     if (!confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      const res = await fetch("http://localhost/janas-boutique/backend/delete_product.php", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/delete_product.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id }),
@@ -344,7 +344,7 @@
           <td className="px-4 py-2">{product.stock}</td>
           <td className="px-4 py-2">
             <img
-              src={`http://localhost/janas-boutique/backend/images/${folderPath}/${fileName}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL}/images/${folderPath}/${fileName}`}
             alt={product.name}
             className="w-12 h-12 object-cover"
           />

@@ -15,7 +15,7 @@ export default function Heels() {
     try {
       // Use 127.0.0.1 instead of localhost for better compatibility
       const res = await fetch(
-        "http://localhost/janas-boutique/backend/getProducts.php?folder=heels"
+        `${process.env.NEXT_PUBLIC_API_URL}/getProducts.php?folder=heels`
       );
 
       // Check if response is ok

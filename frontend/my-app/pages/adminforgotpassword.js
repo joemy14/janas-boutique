@@ -21,7 +21,7 @@ export default function AdminForgotPassword() {
     setMessage("");
 
     try {
-      const res = await fetch("http://localhost/janas-boutique/backend/forgot_password.php", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/forgot_password.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),

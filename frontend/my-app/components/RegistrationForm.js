@@ -43,7 +43,7 @@ export default function RegistrationForm({ onClose }) {
     }
 
     try {
-      const res = await fetch("http://localhost/janas-boutique/backend/register.php", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

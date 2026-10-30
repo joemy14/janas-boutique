@@ -15,7 +15,7 @@ export default function Rings() {
     try {
       // Use 127.0.0.1 instead of localhost for better compatibility
       const res = await fetch(
-        "http://localhost/janas-boutique/backend/getProducts.php?folder=rings"
+        `${process.env.NEXT_PUBLIC_API_URL}/getProducts.php?folder=rings`
       );
 
       // Check if response is ok

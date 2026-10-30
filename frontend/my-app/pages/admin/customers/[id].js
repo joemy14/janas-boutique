@@ -16,7 +16,7 @@ export default function CustomerProfile() {
 
     async function fetchCustomer() {
       try {
-        const res = await fetch(`http://localhost/janas-boutique/backend/get_customers_orders.php?id=${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get_customers_orders.php?id=${id}`);
 const data = await res.json();
 
 if (!res.ok || !data.success) throw new Error(data.message || "Failed to fetch customer");

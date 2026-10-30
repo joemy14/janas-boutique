@@ -32,7 +32,7 @@ export default function LoginForm({ onClose }) {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost/janas-boutique/backend/login.php", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

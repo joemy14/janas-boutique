@@ -16,7 +16,7 @@ export default function Bottoms() {
     try {
       // Use 127.0.0.1 instead of localhost for Next.js reliability
       const res = await fetch(
-        "http://localhost/janas-boutique/backend/getProducts.php?folder=bottoms"
+        `${process.env.NEXT_PUBLIC_API_URL}/getProducts.php?folder=bottoms`
       );
 
       // Check HTTP response

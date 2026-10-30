@@ -31,7 +31,7 @@ export default function AdminCustomers() {
   useEffect(() => {
   async function fetchCustomers() {
     try {
-      const res = await fetch("http://localhost/janas-boutique/backend/get_customers_details.php");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get_customers_details.php`);
       const text = await res.text();
       console.log("RAW RESPONSE:", text); // <--- see what PHP actually returns
       const data = JSON.parse(text);

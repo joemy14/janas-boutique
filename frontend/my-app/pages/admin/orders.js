@@ -30,7 +30,7 @@ export default function AdminOrders() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const res = await fetch("http://localhost/janas-boutique/backend/get_orders.php");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get_orders.php`);
         if (!res.ok) throw new Error("Failed to fetch orders");
         const data = await res.json();
         setOrders(data.orders || []);
@@ -140,7 +140,7 @@ export default function AdminOrders() {
                           {order.products.map((product) => (
                             <div key={product.id} className="flex items-center gap-2">
                               <img
-  src={`http://localhost/janas-boutique/backend/${product.image}`}
+  src={`${process.env.NEXT_PUBLIC_API_URL}/${product.image}`}
   alt={product.name}
   className="w-10 h-10 object-cover rounded"
 />

@@ -16,7 +16,7 @@ export default function SearchSidebar({ onClose }) {
     setIsVisible(true);
 
     // Fetch products from backend
-    fetch("http://localhost/janas-boutique/backend/getProducts.php")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/getProducts.php`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched products:", data);
@@ -66,7 +66,7 @@ export default function SearchSidebar({ onClose }) {
     const folderPath = product.folder.trim().replace(/\s*>\s*/g, "/");
     const fileName = product.image_url.split("/").pop();
 
-    return `http://localhost/janas-boutique/backend/images/${folderPath}/${fileName}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}/images/${folderPath}/${fileName}`;
   };
 
   return (

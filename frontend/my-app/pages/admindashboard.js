@@ -35,7 +35,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function fetchStats() {
   try {
-    const res = await fetch("http://localhost/janas-boutique/backend/stats.php");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stats.php`);
     const data = await res.json();
     setTotalProducts(data.total_products);
     setTotalOrders(data.total_orders);
