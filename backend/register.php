@@ -23,7 +23,7 @@ try {
     $firstName = $data['firstName'] ?? '';
     $lastName  = $data['lastName'] ?? '';
     $email     = $data['email'] ?? '';
-    $password  = $data['password'] ?? '';
+    $inputPassword = $data['password'] ?? '';
 
     // Connect to DB
     require_once __DIR__ . "/db.php";
@@ -40,7 +40,7 @@ try {
     $stmt->close();
 
     // Insert new user
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $hashedPassword = password_hash($inputPassword, PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password_hash, role) VALUES (?, ?, ?, ?, 'customer')");
     if (!$stmt) {
