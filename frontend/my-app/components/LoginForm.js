@@ -140,7 +140,9 @@ export default function LoginForm({ onClose }) {
               border: "none",
               backgroundColor: "#8B2A3C",
               color: "#fff",
-              fontWeight: "500",`r`n              fontSize: "14px",`r`n              cursor: "pointer",
+              fontWeight: "500",
+              fontSize: "14px",
+              cursor: "pointer",
             }}
           >
             Sign In

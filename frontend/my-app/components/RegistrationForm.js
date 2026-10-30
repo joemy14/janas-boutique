@@ -199,7 +199,11 @@ export default function RegistrationForm({ onClose }) {
               padding: "10px",
               borderRadius: "5px",
               border: "none",
-              backgroundColor: "#8B2A3C",`r`n              color: "#fff",`r`n              fontSize: "14px",`r`n              fontWeight: "500",`r`n              cursor: "pointer",
+              backgroundColor: "#8B2A3C",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: "500",
+              cursor: "pointer",
             }}
           >
             Create Account
