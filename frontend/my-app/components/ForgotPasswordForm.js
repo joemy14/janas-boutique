@@ -86,8 +86,8 @@ export default function ForgotPasswordForm({ onClose }) {
             textAlign: "center",
             marginBottom: "20px",
             color: "#000",
-            fontFamily: "'Times New Roman', Times, serif",
-            fontSize: "28px",
+            fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
+            fontSize: "32px",
           }}
         >
           Forgot Password
@@ -131,7 +131,7 @@ export default function ForgotPasswordForm({ onClose }) {
               textAlign: "center",
               color: "#000",
               fontSize: "14px",
-              fontFamily: "'Times New Roman', Times, serif",
+              fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
             }}
           >
             {message}

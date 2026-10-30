@@ -1,4 +1,4 @@
-﻿// pages/admin/orders.js
+// pages/admin/orders.js
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { BsPerson } from "react-icons/bs";
@@ -55,7 +55,7 @@ export default function AdminOrders() {
   return (
     <div className="min-h-screen bg-[#f7f7f7] flex">
       {/* SIDEBAR */}
-      <aside className="fixed left-0 top-0 h-full w-56 bg-white shadow-md pt-28 pb-10" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+      <aside className="fixed left-0 top-0 h-full w-56 bg-white shadow-md pt-28 pb-10" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
         <div className="flex flex-col gap-4 px-5">
           {[
             { label: "Dashboard", path: "/admindashboard" },
@@ -90,7 +90,7 @@ export default function AdminOrders() {
             </button>
 
             {dropdownOpen && (
-              <div className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+              <div className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
                 <div className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition">
                   <BsPerson size={18} className="text-gray-800" />
                   <span className="text-black font-normal text-sm tracking-tight">{admin?.email}</span>
@@ -103,8 +103,8 @@ export default function AdminOrders() {
       </nav>
 
       {/* MAIN CONTENT */}
-      <main className="pt-32 px-6 ml-56 w-full" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
-        <h1 className="text-3xl mb-6 text-gray-800">Orders</h1>
+      <main className="pt-32 px-6 ml-56 w-full" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
+        <h1 className="heading-page mb-6">Orders</h1>
 
         <div className="overflow-x-auto bg-white rounded-lg shadow-md">
           <table className="min-w-full divide-y divide-gray-300">
@@ -155,8 +155,8 @@ export default function AdminOrders() {
                         <span className="text-sm text-gray-500">No products</span>
                       )}
                     </td>
-                    <td className="px-4 py-2">₱{order.total_amount}</td>
-                    <td className="px-4 py-2">₱{order.shipping_cost}</td>
+                    <td className="px-4 py-2">?{order.total_amount}</td>
+                    <td className="px-4 py-2">?{order.shipping_cost}</td>
                     <td className="px-4 py-2">{order.payment_method}</td>
                     <td className="px-4 py-2">{new Date(order.purchase_date).toLocaleString()}</td>
                     <td className="px-4 py-2">{order.first_name} {order.last_name}</td>

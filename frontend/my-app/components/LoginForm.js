@@ -93,8 +93,8 @@ export default function LoginForm({ onClose }) {
             textAlign: "center",
             marginBottom: "20px",
             color: "#000",
-            fontFamily: "'Times New Roman', Times, serif",
-            fontSize: "28px",
+            fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
+            fontSize: "32px",
           }}
         >
           Sign In
@@ -140,8 +140,7 @@ export default function LoginForm({ onClose }) {
               border: "none",
               backgroundColor: "#8B2A3C",
               color: "#fff",
-              fontWeight: "normal",
-              cursor: "pointer",
+              fontWeight: "500",`r`n              fontSize: "14px",`r`n              cursor: "pointer",
             }}
           >
             Sign In

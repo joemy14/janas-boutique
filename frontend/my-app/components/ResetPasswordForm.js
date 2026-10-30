@@ -97,8 +97,8 @@ export default function ResetPasswordForm() {
             textAlign: "center",
             marginBottom: "20px",
             color: "#000",
-            fontFamily: "'Times New Roman', Times, serif",
-            fontSize: "28px",
+            fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
+            fontSize: "32px",
           }}
         >
           Reset Password
@@ -155,7 +155,7 @@ export default function ResetPasswordForm() {
               textAlign: "center",
               color: "#000",
               fontSize: "14px",
-              fontFamily: "'Times New Roman', Times, serif",
+              fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
             }}
           >
             {message}

@@ -1,4 +1,4 @@
-﻿  // pages/admin/products.js
+  // pages/admin/products.js
   "use client";
   import { useState, useEffect, useRef } from "react";
   import { useRouter } from "next/navigation";
@@ -243,7 +243,7 @@
     });
 
     return (
-      <div className="min-h-screen bg-[#f7f7f7] flex" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+      <div className="min-h-screen bg-[#f7f7f7] flex" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
         {/* SIDEBAR */}
         <aside className="fixed left-0 top-0 h-full w-56 bg-white shadow-md pt-28 pb-10">
           <div className="flex flex-col gap-4 px-5">
@@ -338,7 +338,7 @@
         <tr key={product.id} className="hover:bg-gray-100">
           <td className="px-4 py-2">{product.id}</td>
           <td className="px-4 py-2">{product.name}</td>
-          <td className="px-4 py-2">₱{product.price}</td>
+          <td className="px-4 py-2">?{product.price}</td>
           <td className="px-4 py-2">{product.overview}</td>
           <td className="px-4 py-2">{product.folder}</td>
           <td className="px-4 py-2">{product.stock}</td>
@@ -439,7 +439,7 @@
                     onClick={() => setShoesOpen(!shoesOpen)}
                   >
                     Shoes
-                    <span>{shoesOpen ? "▲" : "▼"}</span>
+                    <span>{shoesOpen ? "?" : "?"}</span>
                   </button>
                   {shoesOpen && (
                     <div className="flex flex-col ml-4 border-l border-gray-300">
@@ -467,7 +467,7 @@
                     onClick={() => setAccessoriesOpen(!accessoriesOpen)}
                   >
                     Accessories
-                    <span>{accessoriesOpen ? "▲" : "▼"}</span>
+                    <span>{accessoriesOpen ? "?" : "?"}</span>
                   </button>
                   {accessoriesOpen && (
                     <div className="flex flex-col ml-4 border-l border-gray-300">

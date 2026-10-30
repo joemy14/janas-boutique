@@ -65,7 +65,7 @@ export default function AdminDashboard() {
       {/* ============================ SIDEBAR ============================= */}
       <aside
         className="fixed left-0 top-0 h-full w-56 bg-white shadow-md pt-28 pb-10"
-        style={{ fontFamily: "'Times New Roman', Times, serif" }}
+        style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
       >
         <div className="flex flex-col gap-4 px-5">
           {[
@@ -90,7 +90,7 @@ export default function AdminDashboard() {
         <div className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center pointer-events-auto">
           <div
             className="flex items-center font-serif gap-3"
-            style={{ fontFamily: "'Times New Roman', Times, serif" }}
+            style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
           >
             {/* Home Icon */}
             <button
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
             {dropdownOpen && (
               <div
                 className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50 cursor-pointer"
-                style={{ fontFamily: "'Times New Roman', Times, serif" }}
+                style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
               >
                 <div className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition cursor-pointer">
                   <BsPerson size={18} className="text-gray-800" />
@@ -157,29 +157,29 @@ export default function AdminDashboard() {
       {/* ============================ MAIN DASHBOARD CONTENT ============================= */}
       <main
         className="pt-32 px-6 ml-56 w-full"
-        style={{ fontFamily: "'Times New Roman', Times, serif" }}
+        style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
       >
         {/* DASHBOARD TITLE */}
-        <h1 className="text-3xl mb-10 text-gray-800">Dashboard Overview</h1>
+        <h1 className="heading-page mb-10">Dashboard Overview</h1>
 
         {/* STAT CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Total Products */}
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Active Products</h2>
-            <p className="text-4xl font-bold text-[#8B2A3C]">{totalProducts}</p>
+            <p className="text-4xl font-bold" style={{ color: "#8B2A3C" }}>{totalProducts}</p>
           </div>
 
           {/* Total Orders */}
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Total Orders</h2>
-            <p className="text-4xl font-bold text-[#8B2A3C]">{totalOrders}</p>
+            <p className="text-4xl font-bold" style={{ color: "#8B2A3C" }}>{totalOrders}</p>
           </div>
 
           {/* Total Earnings */}
           <div className="bg-white p-6 rounded-xl shadow-lg text-center">
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Total Earnings</h2>
-            <p className="text-4xl font-bold text-[#8B2A3C]">₱{totalEarnings}</p>
+            <p className="text-4xl font-bold" style={{ color: "#8B2A3C" }}>₱{totalEarnings}</p>
           </div>
         </div>
       </main>

@@ -123,7 +123,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
         {/* LEFT SIDE → Search */}
         <div className="flex items-center gap-6">
           <FaSearch
-            size={24}
+            size={20}
             className="cursor-pointer hover:text-gray-300"
             onClick={() => setIsSearchOpen(true)}
           />
@@ -132,7 +132,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
         {/* CENTER → Nav Links */}
         <div
           className="flex gap-8 mx-auto text-xl"
-          style={{ fontFamily: "'Times New Roman', Times, serif" }}
+          style={{ fontFamily: 'Playfair Display', 'Times New Roman', Times, serif }}
         >
           <a href="/tops" className="relative hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300">
             Tops
@@ -150,7 +150,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
             <button
               className="relative flex items-center gap-1 hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
               onClick={handleToggleDropdown}
-              style={{ fontFamily: "'Times New Roman', Times, serif" }}
+              style={{ fontFamily: 'Playfair Display', 'Times New Roman', Times, serif }}
             >
               Shoes
               <FaChevronDown
@@ -187,7 +187,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
             <button
               className="relative flex items-center gap-1 hover:text-gray-300 after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-0 after:h-[1px] after:bg-white hover:after:w-full after:transition-all after:duration-300 cursor-pointer"
               onClick={handleToggleAccessoriesDropdown}
-              style={{ fontFamily: "'Times New Roman', Times, serif" }}
+              style={{ fontFamily: 'Playfair Display', 'Times New Roman', Times, serif }}
             >
               Accessories
               <FaChevronDown
@@ -234,7 +234,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
         <div className="flex items-center gap-6">
           {/* ✅ Profile Icon */}
           <FaUserCircle
-            size={28}
+            size={20}
             className="cursor-pointer hover:text-gray-300"
             onClick={handleProfileClick}
           />
@@ -242,7 +242,7 @@ export default function Navbar({ cartItems = [], onRemoveItem = () => {} }) {
           {/* Cart → ONLY show if NOT admin */}
           {currentUser?.role !== "admin" && (
             <div className="relative cursor-pointer" onClick={() => setIsCartOpen(true)}>
-              <FaShoppingCart size={28} />
+              <FaShoppingCart size={20} />
               {cartItems.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1 rounded-full">
                   {cartItems.length}

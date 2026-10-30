@@ -72,7 +72,7 @@ export default function AdminForgotPassword() {
             textAlign: "center",
             marginBottom: "20px",
             color: "#000",
-            fontFamily: "'Times New Roman', Times, serif",
+            fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
             fontSize: "28px",
           }}
         >
@@ -113,7 +113,7 @@ export default function AdminForgotPassword() {
               textAlign: "center",
               color: "#000",
               fontSize: "14px",
-              fontFamily: "'Times New Roman', Times, serif",
+              fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
             }}
           >
             {message}

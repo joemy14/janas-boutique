@@ -111,8 +111,8 @@ export default function RegistrationForm({ onClose }) {
             textAlign: "center",
             marginBottom: "20px",
             color: "#000",
-            fontFamily: "'Times New Roman', Times, serif",
-            fontSize: "28px",
+            fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
+            fontSize: "32px",
           }}
         >
           Create an Account
@@ -199,9 +199,7 @@ export default function RegistrationForm({ onClose }) {
               padding: "10px",
               borderRadius: "5px",
               border: "none",
-              backgroundColor: "#8B2A3C",
-              color: "#fff",
-              cursor: "pointer",
+              backgroundColor: "#8B2A3C",`r`n              color: "#fff",`r`n              fontSize: "14px",`r`n              fontWeight: "500",`r`n              cursor: "pointer",
             }}
           >
             Create Account

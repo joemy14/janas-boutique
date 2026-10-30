@@ -155,7 +155,57 @@ body {
   scrollbar-color: #c0a080 #f1f1f1;
 }
 
-/* globals.css or any main CSS file */
+/* Font helpers */
 .font-serif {
   font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+}
+.font-inter {
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* ── Typography scale ───────────────────────────────────── */
+/* Small text: labels, captions */
+.text-caption {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Section headings */
+.heading-section {
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-size: 32px;
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* Page titles */
+.heading-page {
+  font-family: 'Playfair Display', 'Times New Roman', Times, serif;
+  font-size: 40px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--foreground);
+}
+@media (max-width: 640px) {
+  .heading-page { font-size: 32px; }
+}
+
+/* ── Button: one shared accent style ────────────────────── */
+.btn-accent {
+  display: inline-block;
+  background-color: var(--accent);
+  color: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+.btn-accent:hover {
+  opacity: 0.88;
 }
