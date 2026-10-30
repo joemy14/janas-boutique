@@ -6,9 +6,9 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 $data = json_decode(file_get_contents("php://input"), true);
 $email = trim($data['email'] ?? '');
-$password = $data['password'] ?? '';
+$inputPassword = $data['password'] ?? '';
 
-if ($email === '' || $password === '') {
+if ($email === '' || $inputPassword === '') {
     echo json_encode(["success" => false, "message" => "Email and password required"]);
     exit;
 }
@@ -24,7 +24,7 @@ $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 
 // Same message for wrong email or wrong password (don't reveal which)
-if (!$user || !password_verify($password, $user['password_hash'])) {
+if (!$user || !password_verify($inputPassword, $user['password_hash'])) {
     echo json_encode(["success" => false, "message" => "Invalid email or password"]);
     $conn->close();
     exit;
