@@ -64,7 +64,7 @@ export default function AdminDashboard() {
 
       {/* ============================ SIDEBAR ============================= */}
       <aside
-        className="fixed left-0 top-0 h-full w-56 bg-white shadow-md pt-28 pb-10"
+        className="fixed left-0 top-0 h-full w-56 bg-[#FAF8F5] shadow-md pt-28 pb-10"
         style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
       >
         <div className="flex flex-col gap-4 px-5">
@@ -86,7 +86,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* ============================ TOP NAVBAR ============================= */}
-      <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-50 pointer-events-none">
+      <nav className="bg-[#FAF8F5] shadow-md w-full fixed top-0 left-0 z-50 pointer-events-none">
         <div className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center pointer-events-auto">
           <div
             className="flex items-center font-serif gap-3"
@@ -95,10 +95,10 @@ export default function AdminDashboard() {
             {/* Home Icon */}
             <button
               onClick={() => router.push("/")}
-              className="text-black hover:text-gray-700 transition text-2xl flex items-center"
+              className="text-[#1A1A1A] hover:text-gray-700 transition text-2xl flex items-center"
               title="Go to Home"
               style={{
-                backgroundColor: "white",
+                backgroundColor: "#F3EBDD",
                 borderRadius: "50%",
                 padding: "4px",
               }}
@@ -117,7 +117,7 @@ export default function AdminDashboard() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center gap-1 transition"
             >
-              <div className="bg-white rounded-full p-1 shadow-md">
+              <div className="bg-[#FAF8F5] rounded-full p-1 shadow-md">
                 <BsPerson size={22} className="text-gray-800" />
               </div>
               <FaChevronDown
@@ -130,12 +130,12 @@ export default function AdminDashboard() {
 
             {dropdownOpen && (
               <div
-                className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50 cursor-pointer"
+                className="absolute left-0 top-full mt-2 w-64 bg-[#FAF8F5] shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50 cursor-pointer"
                 style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
               >
                 <div className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition cursor-pointer">
                   <BsPerson size={18} className="text-gray-800" />
-                  <span className="text-black font-normal text-sm tracking-tight">
+                  <span className="text-[#1A1A1A] font-normal text-sm tracking-tight">
                     {admin?.email}
                   </span>
                 </div>
@@ -144,7 +144,7 @@ export default function AdminDashboard() {
                     localStorage.removeItem("currentUser");
                     router.push("/auth");
                   }}
-                  className="text-left text-black font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition cursor pointer"
+                  className="text-left text-[#1A1A1A] font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition cursor pointer"
                 >
                   Sign out
                 </button>
@@ -165,20 +165,20 @@ export default function AdminDashboard() {
         {/* STAT CARDS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Total Products */}
-          <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Active Products</h2>
+          <div className="bg-[#FAF8F5] p-6 rounded-xl shadow-lg text-center">
+            <h2 className="text-xl font-serif font-semibold text-gray-800 mb-2">Active Products</h2>
             <p className="text-4xl font-bold" style={{ color: "#8B2A3C" }}>{totalProducts}</p>
           </div>
 
           {/* Total Orders */}
-          <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Total Orders</h2>
+          <div className="bg-[#FAF8F5] p-6 rounded-xl shadow-lg text-center">
+            <h2 className="text-xl font-serif font-semibold text-gray-800 mb-2">Total Orders</h2>
             <p className="text-4xl font-bold" style={{ color: "#8B2A3C" }}>{totalOrders}</p>
           </div>
 
           {/* Total Earnings */}
-          <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Total Earnings</h2>
+          <div className="bg-[#FAF8F5] p-6 rounded-xl shadow-lg text-center">
+            <h2 className="text-xl font-serif font-semibold text-gray-800 mb-2">Total Earnings</h2>
             <p className="text-4xl font-bold" style={{ color: "#8B2A3C" }}>₱{totalEarnings}</p>
           </div>
         </div>

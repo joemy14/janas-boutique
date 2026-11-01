@@ -64,7 +64,7 @@ export default function LoginForm({ onClose }) {
       style={{
         position: "fixed",
         inset: 0,
-        backgroundImage: "url('/images/AuthBackground.jpg')",
+        backgroundImage: "linear-gradient(rgba(20,17,15,0.72), rgba(20,17,15,0.72)), url('/images/AuthBackground.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -77,73 +77,51 @@ export default function LoginForm({ onClose }) {
       }}
     >
       <div
+        className="auth-card"
         style={{
-          backgroundColor: "rgba(245, 245, 220, 0.6)",
-          padding: "30px",
-          borderRadius: "10px",
-          width: "100%",
-          maxWidth: "400px",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
           opacity: fadeIn ? 1 : 0,
           transition: "opacity 1s ease-in",
         }}
       >
+        <div className="auth-brand" style={{ fontSize: "16px", letterSpacing: "0.2em" }}>
+          Jana&apos;s <span style={{ fontSize: "11px" }}>Boutique</span>
+        </div>
         <h2
           style={{
             textAlign: "center",
-            marginBottom: "20px",
-            color: "#000",
-            fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
+            color: "var(--auth-text)",
+            fontFamily: "'Playfair Display', serif",
             fontSize: "32px",
+            marginBottom: 0,
           }}
         >
           Sign In
         </h2>
+        <div style={{ width: "40px", height: "1px", background: "var(--auth-muted)", margin: "12px auto 24px" }} />
 
         <form
           style={{ display: "flex", flexDirection: "column", gap: "15px" }}
           onSubmit={handleSubmit}
         >
           <input
+            className="auth-input"
             name="email"
             type="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              color: "#000",
-              backgroundColor: "#fff",
-            }}
           />
           <input
+            className="auth-input"
             name="password"
             type="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-              color: "#000",
-              backgroundColor: "#fff",
-            }}
           />
           <button
+            className="auth-button"
             type="submit"
-            style={{
-              padding: "10px",
-              borderRadius: "5px",
-              border: "none",
-              backgroundColor: "#8B2A3C",
-              color: "#fff",
-              fontWeight: "500",
-              fontSize: "14px",
-              cursor: "pointer",
-            }}
           >
             Sign In
           </button>
@@ -153,16 +131,15 @@ export default function LoginForm({ onClose }) {
               style={{
                 textAlign: "center",
                 marginTop: "15px",
-                color: "#000",
+                color: "#F3EBDD",
                 fontSize: "14px",
               }}
             >
               Don&apos;t have an account yet?{" "}
               <span
+                className="auth-link"
                 style={{
-                  textDecoration: "underline",
                   cursor: "pointer",
-                  color: "#8B2A3C",
                 }}
                 onClick={() => onClose && onClose()}
               >

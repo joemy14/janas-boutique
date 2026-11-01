@@ -238,13 +238,13 @@ await sendReceipt(order);
   }, []);
 
   return (
-    <div className="min-h-screen bg-white font-serif text-black">
+    <div className="min-h-screen bg-[#FAF8F5] font-serif text-[#1A1A1A]">
       {/* Navbar */}
-      <nav className="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+      <nav className="bg-[#FAF8F5] shadow-md fixed top-0 left-0 w-full z-50">
         <div className="max-w-6xl mx-auto px-6 py-6 flex items-center">
           <button
             onClick={() => router.push("/")}
-            className="text-2xl text-black mr-4 hover:text-gray-700"
+            className="text-2xl text-[#1A1A1A] mr-4 hover:text-gray-700"
             aria-label="Go to Homepage"
           >
             <AiOutlineHome />
@@ -256,16 +256,16 @@ await sendReceipt(order);
       {/* Main Content */}
       <main className="pt-32 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Form */}
-        <div className="bg-white border border-gray-300 rounded-lg p-6 shadow-sm space-y-4">
+        <div className="bg-[#FAF8F5] border border-gray-300 rounded-lg p-6 shadow-sm space-y-4">
           <h1 className="text-2xl font-bold mb-4">Shipping & Payment</h1>
-          {alert && <div className="bg-red-200 text-red-800 p-3 rounded">{alert}</div>}
+          {alert && <div className="bg-[#8B2A3C] text-[#C97A74] p-3 rounded">{alert}</div>}
 
           {/* Country */}
           <div className="relative">
             <button
               type="button"
               onClick={() => setCountryOpen(!countryOpen)}
-              className="w-full p-2 border rounded flex justify-between items-center text-black"
+              className="w-full p-2 border rounded flex justify-between items-center text-[#1A1A1A]"
             >
               <span>{country}</span>
               <FaChevronDown
@@ -275,7 +275,7 @@ await sendReceipt(order);
               />
             </button>
             {countryOpen && (
-              <div className="absolute w-full bg-white border rounded mt-1 z-10">
+              <div className="absolute w-full bg-[#FAF8F5] border rounded mt-1 z-10">
                 <button
                   className="w-full text-left p-2 hover:bg-gray-100"
                   onClick={() => {
@@ -296,14 +296,14 @@ await sendReceipt(order);
               placeholder="First Name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full p-2 border rounded text-black placeholder-black"
+              className="w-full p-2 border rounded text-[#1A1A1A] placeholder-[#1A1A1A]"
             />
             <input
               type="text"
               placeholder="Last Name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full p-2 border rounded text-black placeholder-black"
+              className="w-full p-2 border rounded text-[#1A1A1A] placeholder-[#1A1A1A]"
             />
           </div>
 
@@ -313,7 +313,7 @@ await sendReceipt(order);
             placeholder="Address"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="w-full p-2 border rounded text-black placeholder-black"
+            className="w-full p-2 border rounded text-[#1A1A1A] placeholder-[#1A1A1A]"
           />
 
           {/* City / Province / ZIP */}
@@ -323,7 +323,7 @@ await sendReceipt(order);
               placeholder="City"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="w-full p-2 border rounded text-black placeholder-black"
+              className="w-full p-2 border rounded text-[#1A1A1A] placeholder-[#1A1A1A]"
             />
             <div className="space-y-2">
               <input
@@ -331,14 +331,14 @@ await sendReceipt(order);
                 placeholder="Province"
                 value={state}
                 onChange={(e) => setState(e.target.value)}
-                className="w-full p-2 border rounded text-black placeholder-black"
+                className="w-full p-2 border rounded text-[#1A1A1A] placeholder-[#1A1A1A]"
               />
               <input
                 type="text"
                 placeholder="ZIP / Postal"
                 value={zip}
                 onChange={(e) => setZip(e.target.value)}
-                className="w-full p-2 border rounded text-black placeholder-black"
+                className="w-full p-2 border rounded text-[#1A1A1A] placeholder-[#1A1A1A]"
               />
             </div>
           </div>
@@ -349,7 +349,7 @@ await sendReceipt(order);
             placeholder="Phone +63"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full p-2 border rounded text-black placeholder-black"
+            className="w-full p-2 border rounded text-[#1A1A1A] placeholder-[#1A1A1A]"
           />
 
           {/* Payment */}
@@ -364,16 +364,16 @@ await sendReceipt(order);
                   className="cursor-pointer hover:bg-gray-100"
                   onClick={() => setSelectedPayment(option.name)}
                 >
-                  <div className="flex items-center gap-2 p-1 border border-black rounded-md w-32 h-16">
+                  <div className="flex items-center gap-2 p-1 border border-[#1A1A1A] rounded-md w-32 h-16">
                     <div
                       className={`w-4 h-4 rounded-full border flex items-center justify-center flex-shrink-0 ${
                         selectedPayment === option.name
-                          ? "bg-blue-500 border-blue-500"
-                          : "border-gray-400 bg-white"
+                          ? "bg-[#8B2A3C] border-[#8B2A3C]"
+                          : "border-gray-400 bg-[#FAF8F5]"
                       }`}
                     >
                       {selectedPayment === option.name && (
-                        <div className="w-2 h-2 bg-white rounded-full" />
+                        <div className="w-2 h-2 bg-[#FAF8F5] rounded-full" />
                       )}
                     </div>
 
@@ -403,7 +403,7 @@ await sendReceipt(order);
             <button
               onClick={handlePayNow}
               disabled={isProcessing}
-              className="w-full bg-black text-white py-3 rounded mt-4 font-semibold flex items-center justify-center gap-2 transition-transform duration-150 ease-in-out hover:translate-x-1 active:scale-95 cursor-pointer"
+              className="w-full bg-[#14110F] text-[#F3EBDD] py-3 rounded mt-4 font-semibold flex items-center justify-center gap-2 transition-transform duration-150 ease-in-out hover:translate-x-1 active:scale-95 cursor-pointer"
             >
               {isProcessing ? "Processing..." : "Pay Now"} <span>→</span>
             </button>
@@ -411,7 +411,7 @@ await sendReceipt(order);
         </div>
 
         {/* Order Summary */}
-<div className="bg-white border border-gray-300 rounded-lg p-6 shadow-sm text-black">
+<div className="bg-[#FAF8F5] border border-gray-300 rounded-lg p-6 shadow-sm text-[#1A1A1A]">
   <h2 className="text-xl font-bold mb-4">Your Order</h2>
   <div className="space-y-4">
     {cartItems.map((item, idx) => (
@@ -480,7 +480,7 @@ await sendReceipt(order);
       setCountry("Philippines");
       setRememberMe(false);
     }}
-    className="px-4 py-2 border border-black bg-white text-black rounded transition hover:bg-gray-100 cursor-pointer"
+    className="px-4 py-2 border border-[#1A1A1A] bg-[#FAF8F5] text-[#1A1A1A] rounded transition hover:bg-gray-100 cursor-pointer"
     style={{ fontFamily: "'Times New Roman', Times, serif" }}
   >
     Cancel
@@ -495,13 +495,13 @@ await sendReceipt(order);
       {/* GCash Modal */}
       {showGcashModal && (
         <div className="fixed top-1/4 left-1/2 transform -translate-x-1/2 w-96 z-50">
-          <div className="bg-white shadow-lg overflow-hidden">
-            <div className="bg-black text-white p-4 flex flex-col items-center space-y-1">
+          <div className="bg-[#FAF8F5] shadow-lg overflow-hidden">
+            <div className="bg-[#14110F] text-[#F3EBDD] p-4 flex flex-col items-center space-y-1">
               <h2 className="text-xl font-normal">Pay with GCash</h2>
               <span className="text-sm font-normal">Jana&apos;s Boutique | janas.work.ph</span>
             </div>
 
-            <div className="p-6 space-y-4 text-center text-black">
+            <div className="p-6 space-y-4 text-center text-[#1A1A1A]">
               <p className="font-normal text-sm text-gray-700">
                 Send your payment to the following GCash number:
               </p>
@@ -514,7 +514,7 @@ await sendReceipt(order);
                 type="button"
                 onClick={handleGcashPaymentComplete}
                 disabled={isProcessing}
-                className="w-full bg-black text-white py-2 font-normal hover:bg-gray-800 transition cursor-pointer"
+                className="w-full bg-[#14110F] text-[#F3EBDD] py-2 font-normal hover:bg-gray-800 transition cursor-pointer"
               >
                 {isProcessing ? "Processing..." : "Confirm Payment"}
               </button>
@@ -522,7 +522,7 @@ await sendReceipt(order);
               <button
                 type="button"
                 onClick={() => setShowGcashModal(false)}
-                className="w-full bg-gray-300 text-black py-2 font-normal hover:bg-gray-400 transition cursor-pointer"
+                className="w-full bg-gray-300 text-[#1A1A1A] py-2 font-normal hover:bg-gray-400 transition cursor-pointer"
               >
                 Cancel
               </button>

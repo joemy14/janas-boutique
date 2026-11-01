@@ -25,7 +25,7 @@ export default function ProductCard({ product, onAddToCart, index, currentUser }
 
   return (
     <motion.div
-      className="bg-white shadow rounded-none overflow-hidden transition w-full max-w-sm relative"
+      className="bg-[#FAF8F5] shadow rounded-none overflow-hidden transition w-full max-w-sm relative"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: false, amount: 0.2 }}
@@ -37,7 +37,7 @@ export default function ProductCard({ product, onAddToCart, index, currentUser }
       style={{ opacity: 1 }}
     >
       <div
-        className="bg-white w-full h-130 flex items-center justify-center relative overflow-hidden"
+        className="bg-[#FAF8F5] w-full h-130 flex items-center justify-center relative overflow-hidden"
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
@@ -57,7 +57,7 @@ export default function ProductCard({ product, onAddToCart, index, currentUser }
         >
           <button
             onClick={() => setShowModal(true)}
-            className="relative bg-white text-black border border-black w-50 py-2 rounded hover:bg-black hover:text-white transition text-sm cursor-pointer"
+            className="relative bg-[#FAF8F5] text-[#1A1A1A] border border-[#1A1A1A] w-50 py-2 rounded hover:bg-[#14110F] hover:text-[#F3EBDD] transition text-sm cursor-pointer"
             style={{ fontFamily: "'Times New Roman', Times, serif" }}
           >
             Quick View

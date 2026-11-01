@@ -62,7 +62,7 @@ export default function Home({ cartItems, setCartItems }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1 }}
-      className="text-5xl md:text-7xl font-serif text-white drop-shadow-lg z-10"
+      className="text-5xl md:text-7xl font-serif text-[#F3EBDD] drop-shadow-lg z-10"
     >
       Timeless Elegance
     </motion.h1>
@@ -81,7 +81,7 @@ export default function Home({ cartItems, setCartItems }) {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.4 }}
-      className="mt-8 px-8 py-3 bg-white text-gray-900 font-medium rounded-full shadow-md hover:bg-gray-100 transition-all duration-300 z-10"
+      className="mt-8 px-8 py-3 bg-[#FAF8F5] text-gray-900 font-medium rounded-full shadow-md hover:bg-gray-100 transition-all duration-300 z-10"
     >
       Shop Now
     </motion.button>
@@ -91,7 +91,7 @@ export default function Home({ cartItems, setCartItems }) {
 
 
       {/* About / Collection Section */}
-<section className="py-24 px-6 md:px-16 bg-white text-center">
+<section className="py-24 px-6 md:px-16 bg-[#FAF8F5] text-center">
   <h2 className="text-4xl md:text-5xl font-serif font-semibold mb-6 text-gray-900" style={{ fontFamily: "'Playfair Display', serif" }}>
     Our Story
   </h2>
@@ -104,12 +104,12 @@ export default function Home({ cartItems, setCartItems }) {
 
 {/* Featured Products Section */}
 <section className="py-16 px-6 md:px-12 relative bg-gradient-to-r from-[#fef9f5] via-[#faf7f5] to-[#fef9f5]">
-  <h2 className="text-3xl font-serif text-center mb-10">Featured Collection</h2>
+  <h2 className="text-3xl font-serif text-center mb-10" style={{ fontFamily: "'Playfair Display', serif" }}>Featured Collection</h2>
 
   {/* Left Arrow */}
   <button
     onClick={() => scroll("left")}
-    className="absolute left-2 top-1/2 -translate-y-1/2 bg-white p-2 shadow hover:bg-gray-100 z-10 cursor-pointer"
+    className="absolute left-2 top-1/2 -translate-y-1/2 bg-[#FAF8F5] p-2 shadow hover:bg-gray-100 z-10 cursor-pointer"
   >
     &#8592;
   </button>
@@ -117,7 +117,7 @@ export default function Home({ cartItems, setCartItems }) {
   {/* Right Arrow */}
   <button
     onClick={() => scroll("right")}
-    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white p-2 shadow hover:bg-gray-100 z-10 cursor-pointer"
+    className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#FAF8F5] p-2 shadow hover:bg-gray-100 z-10 cursor-pointer"
   >
     &#8594;
   </button>
@@ -136,7 +136,7 @@ export default function Home({ cartItems, setCartItems }) {
     {featuredImages.map((item, i) => (
   <div
     key={i}
-    className="min-w-[300px] md:min-w-[350px] relative group overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-white p-2 border border-black/50"
+    className="min-w-[300px] md:min-w-[350px] relative group overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 bg-[#FAF8F5] p-2 border border-[#1A1A1A]/50"
   >
     <Image
       src={`/images/${item.src}`}
@@ -145,8 +145,8 @@ export default function Home({ cartItems, setCartItems }) {
       height={600}
       className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
     />
-    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-      <span className="bg-white text-gray-900 px-5 py-2 font-medium">
+    <div className="absolute inset-0 bg-[rgba(20,17,15,0.2)] opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+      <span className="bg-[#FAF8F5] text-gray-900 px-5 py-2 font-medium">
         {item.category}
       </span>
     </div>
@@ -163,26 +163,26 @@ export default function Home({ cartItems, setCartItems }) {
 
     {/* About / Brand (Left) */}
     <div className="flex flex-col items-start md:items-start justify-center text-left">
-      <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-3 text-white">
+      <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-3 text-[#F3EBDD]">
         Jana&apos;s Boutique
       </h3>
-      <p className="text-sm md:text-base text-white/90 leading-relaxed">
+      <p className="text-sm md:text-[15px] text-[#F3EBDD]/90 leading-relaxed">
         Timeless elegance and curated fashion pieces. Stay stylish, always.
       </p>
     </div>
 
     {/* Contact / Socials (Center) */}
     <div className="flex flex-col items-center justify-center text-center">
-      <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-3 text-white">
+      <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-3 text-[#F3EBDD]">
         Contact Us
       </h3>
-      <div className="flex flex-col gap-2 text-white/90 text-sm md:text-base">
+      <div className="flex flex-col gap-2 text-[#F3EBDD]/90 text-sm md:text-[15px]">
         <div className="flex items-center gap-2">
-          <EnvelopeIcon className="h-5 w-5 text-white/90" />
+          <EnvelopeIcon className="h-5 w-5 text-[#F3EBDD]/90" />
           <span>jana.workplace.ph.com</span>
         </div>
         <div className="flex items-center gap-2">
-          <PhoneIcon className="h-5 w-5 text-white/90" />
+          <PhoneIcon className="h-5 w-5 text-[#F3EBDD]/90" />
           <span>+63 948 892 9764</span>
         </div>
       </div>
@@ -190,7 +190,7 @@ export default function Home({ cartItems, setCartItems }) {
 
     {/* Payment (Right) */}
     <div className="flex flex-col items-end md:items-end justify-center text-right">
-      <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-3 text-white">
+      <h3 className="text-2xl md:text-3xl font-serif font-semibold mb-3 text-[#F3EBDD]">
         Payment Method
       </h3>
       <div className="flex justify-end items-center gap-4 mt-2">
@@ -205,7 +205,7 @@ export default function Home({ cartItems, setCartItems }) {
   </div>
 
   {/* Bottom copyright */}
-  <div className="mt-10 text-center text-sm text-white/80 font-serif">
+  <div className="mt-10 text-center text-sm md:text-[15px] text-[#F3EBDD]/80 font-serif">
     © {new Date().getFullYear()} Jana&apos;s Boutique — All rights reserved.
   </div>
 </footer>

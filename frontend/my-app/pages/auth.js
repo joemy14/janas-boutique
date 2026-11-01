@@ -34,7 +34,7 @@ export default function AuthPage() {
         position: "relative",
         width: "100%",
         minHeight: "100vh",
-        backgroundImage: "url('/images/AuthBackground.jpg')",
+        backgroundImage: "linear-gradient(rgba(20,17,15,0.72), rgba(20,17,15,0.72)), url('/images/AuthBackground.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

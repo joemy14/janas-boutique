@@ -65,7 +65,7 @@ export default function Orders() {
   return (
     <div className="min-h-screen bg-[#f7f7f7]">
       {/* Navbar */}
-      <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-50 pointer-events-none">
+      <nav className="bg-[#FAF8F5] shadow-md w-full fixed top-0 left-0 z-50 pointer-events-none">
         <div className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center pointer-events-auto">
           <div className="flex items-center font-serif" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
             <span className="text-2xl text-gray-800 font-normal mr-24">Jana’s Boutique</span>
@@ -85,7 +85,7 @@ export default function Orders() {
           {/* Profile Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-1 transition cursor-pointer">
-              <div className="bg-white rounded-full p-1 shadow-md">
+              <div className="bg-[#FAF8F5] rounded-full p-1 shadow-md">
                 <BsPerson size={22} className="text-gray-800" />
               </div>
               <FaChevronDown
@@ -97,19 +97,19 @@ export default function Orders() {
             </button>
             {dropdownOpen && (
               <div
-                className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50"
+                className="absolute left-0 top-full mt-2 w-64 bg-[#FAF8F5] shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50"
                 style={{ fontFamily: "'Times New Roman', Times, serif" }}
               >
                 <div className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition">
                   <BsPerson size={18} className="text-gray-800" />
-                  <span className="text-black font-normal text-sm tracking-tight">{user?.email}</span>
+                  <span className="text-[#1A1A1A] font-normal text-sm tracking-tight">{user?.email}</span>
                 </div>
                 <button
                   onClick={() => {
                     localStorage.removeItem("currentUser");
                     router.push("/");
                   }}
-                  className="text-left text-black font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition cursor-pointer"
+                  className="text-left text-[#1A1A1A] font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition cursor-pointer"
                 >
                   Sign out
                   
@@ -125,7 +125,7 @@ export default function Orders() {
         <div className="flex justify-between items-center mb-6">
           <h1
             className="text-3xl"
-            style={{ fontFamily: "'Times New Roman', Times, serif", color: "black" }}
+            style={{ fontFamily: "'Times New Roman', Times, serif", color: "#1A1A1A" }}
           >
             Order History
           </h1>
@@ -133,24 +133,24 @@ export default function Orders() {
           {orders.length > 0 && (
             <button
               onClick={clearOrders}
-              className="p-2 rounded border border-black bg-white transition cursor-pointer flex items-center justify-center"
+              className="p-2 rounded border border-[#1A1A1A] bg-[#FAF8F5] transition cursor-pointer flex items-center justify-center"
             >
-              <FaTrash className="text-white" size={18} style={{ stroke: "black", strokeWidth: 20 }} />
+              <FaTrash className="text-[#F3EBDD]" size={18} style={{ stroke: "#1A1A1A", strokeWidth: 20 }} />
             </button>
           )}
         </div>
 
         {orders.length === 0 ? (
-          <div className="bg-white border border-gray-300 rounded-lg h-64 flex flex-col justify-center items-center">
-            <p className="text-black text-lg font-normal" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+          <div className="bg-[#FAF8F5] border border-gray-300 rounded-lg h-64 flex flex-col justify-center items-center">
+            <p className="text-[#1A1A1A] text-lg font-normal" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
               No orders yet
             </p>
-            <p className="text-black text-lg font-normal" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
+            <p className="text-[#1A1A1A] text-lg font-normal" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
               Go to store to place an order.
             </p>
           </div>
         ) : (
-          <div className="bg-white border border-gray-300 rounded-lg p-4 space-y-6 max-h-[500px] overflow-y-auto">
+          <div className="bg-[#FAF8F5] border border-gray-300 rounded-lg p-4 space-y-6 max-h-[500px] overflow-y-auto">
             {orders.map((order, idx) => (
               <div key={idx} className="border-b border-gray-200 pb-4 last:border-b-0">
                 <p className="text-gray-700 mb-2 text-sm">

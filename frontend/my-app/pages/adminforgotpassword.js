@@ -52,17 +52,12 @@ export default function AdminForgotPassword() {
       }}
     >
       <form
+        className="auth-card"
         onSubmit={handleSubmit}
         style={{
           display: "flex",
           flexDirection: "column",
           gap: "15px",
-          padding: "30px",
-          borderRadius: "10px",
-          backgroundColor: "rgba(245, 245, 220, 0.6)",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-          width: "100%",
-          maxWidth: "400px",
           opacity: fadeIn ? 1 : 0,
           transition: "opacity 1s ease-in",
         }}
@@ -70,38 +65,26 @@ export default function AdminForgotPassword() {
         <h2
           style={{
             textAlign: "center",
-            marginBottom: "20px",
-            color: "#000",
-            fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
+            color: "var(--auth-text)",
+            fontFamily: "'Playfair Display', serif",
             fontSize: "28px",
+            marginBottom: 0,
           }}
         >
           Admin Forgot Password
         </h2>
+        <div style={{ width: "40px", height: "1px", background: "var(--auth-muted)", margin: "12px auto 24px" }} />
 
         <input
+          className="auth-input"
           type="email"
           placeholder="Admin Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={{
-            padding: "10px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-            color: "#000",
-            backgroundColor: "#fff",
-          }}
         />
         <button
+          className="auth-button"
           type="submit"
-          style={{
-            padding: "10px",
-            borderRadius: "5px",
-            border: "none",
-            backgroundColor: "#8B2A3C",
-            color: "#fff",
-            cursor: "pointer",
-          }}
         >
           Send Reset Link
         </button>
@@ -111,7 +94,7 @@ export default function AdminForgotPassword() {
             style={{
               marginTop: "15px",
               textAlign: "center",
-              color: "#000",
+              color: "#1A1A1A",
               fontSize: "14px",
               fontFamily: "'Playfair Display', 'Times New Roman', Times, serif",
             }}

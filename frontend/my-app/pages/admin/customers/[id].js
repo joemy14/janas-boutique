@@ -40,7 +40,7 @@ setCustomer({ ...data.customer, orders: data.orders }); // data.orders now conta
   return (
     <div className="min-h-screen bg-[#f7f7f7] font-serif">
       {/* Navbar */}
-      <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-50">
+      <nav className="bg-[#FAF8F5] shadow-md w-full fixed top-0 left-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-6 flex items-center font-serif" style={{ fontFamily: "'Times New Roman', Times, serif" }}>
           <button
             onClick={() => router.push("/admin/customers")}
@@ -54,20 +54,20 @@ setCustomer({ ...data.customer, orders: data.orders }); // data.orders now conta
       {/* Main content */}
       <main className="pt-32 px-6 max-w-4xl mx-auto w-full">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="flex items-center gap-2 text-xl font-semibold text-black">
+          <h1 className="flex items-center gap-2 text-xl font-semibold text-[#1A1A1A]">
   <BsPerson size={28} className="text-gray-800" />
   {customer.first_name} {customer.last_name}
 </h1>
 
         </div>
 
-        <div className="bg-white border border-black rounded-lg shadow p-6 space-y-4">
+        <div className="bg-[#FAF8F5] border border-[#1A1A1A] rounded-lg shadow p-6 space-y-4">
           <p className="text-gray-700">
             <strong>Email:</strong> {customer.email}
           </p>
 
-          <h3 className="text-lg font-normal mt-4 text-white" style={{ WebkitTextStroke: "0.5px black", // subtle black outline
-          textStroke: "0.5px black"}} >Orders </h3>
+          <h3 className="text-lg font-normal mt-4 text-[#F3EBDD]" style={{ WebkitTextStroke: "0.5px #1A1A1A", // subtle near-black outline
+          textStroke: "0.5px #1A1A1A"}} >Orders </h3>
 
           {customer.orders.length > 0 ? (
             <div className="space-y-4 max-h-[400px] overflow-y-auto">

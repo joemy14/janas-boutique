@@ -108,13 +108,13 @@ export default function QuickViewModal({ product, onClose, currentUser }) {
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center">
       {/* Overlay */}
-      <div className={`absolute inset-0 bg-black/40 transition-opacity duration-300 ${show ? "opacity-100" : "opacity-0"}`} />
+      <div className={`absolute inset-0 bg-[rgba(20,17,15,0.4)] transition-opacity duration-300 ${show ? "opacity-100" : "opacity-0"}`} />
 
       {/* Modal */}
-      <div className={`relative bg-white rounded-none p-6 w-[95%] max-w-4xl h-[600px] shadow-lg flex gap-8 transition-all duration-300 ${show ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
+      <div className={`relative bg-[#FAF8F5] rounded-none p-6 w-[95%] max-w-4xl h-[600px] shadow-lg flex gap-8 transition-all duration-300 ${show ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}>
         {/* Close button */}
         <button
-          className="absolute top-2 right-2 text-gray-600 font-bold text-2xl cursor-pointer hover:text-red-600 transition-colors"
+          className="absolute top-2 right-2 text-gray-600 font-bold text-2xl cursor-pointer hover:text-[#C97A74] transition-colors"
           onClick={handleClose}
           style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}
         >
@@ -122,19 +122,19 @@ export default function QuickViewModal({ product, onClose, currentUser }) {
         </button>
 
         {/* Left - Image */}
-        <div className="w-1/2 flex items-center justify-center bg-white relative">
+        <div className="w-1/2 flex items-center justify-center bg-[#FAF8F5] relative">
           <Image src={imageSrc} alt={product?.name || "Product"} fill className="object-contain w-full h-auto max-h-full max-w-full" />
         </div>
 
         {/* Right - Info */}
         <div className="w-1/2 flex flex-col overflow-hidden" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
-          <h2 className="text-2xl mb-3 text-black">{product.name}</h2>
-          <p className="text-gray-600 mb-4">₱{Number(displayedPrice).toLocaleString()}</p>
+          <h2 className="text-[16px] md:text-[18px] mb-3 text-[#1A1A1A]" style={{ fontFamily: "'Playfair Display', serif" }}>{product.name}</h2>
+          <p className="text-[15px] md:text-[16px] text-gray-600 mb-4">₱{Number(displayedPrice).toLocaleString()}</p>
 
           {/* Sizes */}
           {sizeOptions.length > 0 && (
             <div className="mb-4">
-              <p className="mb-2 text-black">
+              <p className="mb-2 text-[#1A1A1A]">
                 {isPerfume
                   ? `Size: ${size}`
                   : isFootwear
@@ -152,7 +152,7 @@ export default function QuickViewModal({ product, onClose, currentUser }) {
                   <button
                     key={s}
                     onClick={() => setSize(s)}
-                    className={`px-4 py-1 mr-2 mb-2 rounded border transition ${size === s ? "bg-black text-white" : "bg-gray-200 text-black"}`}
+                    className={`px-4 py-1 mr-2 mb-2 rounded border transition ${size === s ? "bg-[#14110F] text-[#F3EBDD]" : "bg-gray-200 text-[#1A1A1A]"}`}
                     style={{ fontWeight: "normal" }}
                   >
                     {s}
@@ -165,17 +165,17 @@ export default function QuickViewModal({ product, onClose, currentUser }) {
           {/* Quantity */}
           <div className="mb-4 flex flex-col gap-1">
             <div className="flex items-center gap-3">
-              <span className="text-black">Quantity:</span>
-              <div className="flex items-center border border-black rounded">
+              <span className="text-[#1A1A1A]">Quantity:</span>
+              <div className="flex items-center border border-[#1A1A1A] rounded">
                 <button
-                  className="px-3 py-1 border-r border-black text-black bg-white hover:bg-[#f5f5dc] transition cursor-pointer"
+                  className="px-3 py-1 border-r border-[#1A1A1A] text-[#1A1A1A] bg-[#FAF8F5] hover:bg-[#FAF8F5] transition cursor-pointer"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                 >
                   -
                 </button>
-                <span className="px-4 text-black">{quantity}</span>
+                <span className="px-4 text-[#1A1A1A]">{quantity}</span>
                 <button
-                  className="px-3 py-1 border-l border-black text-black bg-white hover:bg-[#f5f5dc] transition cursor-pointer"
+                  className="px-3 py-1 border-l border-[#1A1A1A] text-[#1A1A1A] bg-[#FAF8F5] hover:bg-[#FAF8F5] transition cursor-pointer"
                   onClick={() => setQuantity(Math.min(quantity + 1, product.stock))}
                   disabled={product.stock === 0}
                 >
@@ -183,7 +183,7 @@ export default function QuickViewModal({ product, onClose, currentUser }) {
                 </button>
               </div>
             </div>
-            <p className="text-sm text-red-600 mt-1">
+            <p className="text-sm text-[#C97A74] mt-1">
               {product.stock} item{product.stock !== 1 ? "s" : ""} left in stock
             </p>
           </div>
@@ -195,13 +195,13 @@ export default function QuickViewModal({ product, onClose, currentUser }) {
           <div className="flex gap-4 mt-auto">
             <button
               onClick={handleAddToCart}
-              className="btn-accent"
+              className="auth-button"
             >
               Add to Cart
             </button>
             <button
               onClick={handleBuyNow}
-              className="btn-accent"
+              className="auth-button"
             >
               Buy Now
             </button>

@@ -20,7 +20,7 @@ export default function Breadcrumb({ paths }) {
             {index === 0 ? (
               <Link href="/">
                 <span
-                  className="text-white hover:text-black transition-colors duration-200 cursor-pointer"
+                  className="text-[#F3EBDD] hover:text-[#1A1A1A] transition-colors duration-200 cursor-pointer"
                   style={{ fontFamily: "Times New Roman, serif", textDecoration: "none" }}
                 >
                   {path}

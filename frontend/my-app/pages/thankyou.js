@@ -14,7 +14,7 @@ export default function ThankYou() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-white text-black font-serif">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#FAF8F5] text-[#1A1A1A] font-serif">
   <h1 className="text-3xl font-bold mb-4">Thank you for your order!</h1>
   <p className="text-lg">
     Your payment was successful and your order is confirmed.

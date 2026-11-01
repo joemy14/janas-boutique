@@ -74,18 +74,18 @@ export default function SearchSidebar({ onClose }) {
       {/* Overlay */}
       <div
         onClick={handleClose}
-        className={`fixed inset-0 bg-black/40 transition-opacity duration-300 z-40 ${
+        className={`fixed inset-0 bg-[rgba(20,17,15,0.4)] transition-opacity duration-300 z-40 ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       ></div>
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 w-96 h-full bg-white shadow-lg p-4 z-50 transform transition-transform duration-300 font-serif ${
+        className={`fixed top-0 left-0 w-96 h-full bg-[#FAF8F5] shadow-lg p-4 z-50 transform transition-transform duration-300 font-serif ${
           isVisible ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <button onClick={handleClose} className="float-right text-black">
+        <button onClick={handleClose} className="float-right text-[#1A1A1A]">
           ✖
         </button>
 
@@ -99,12 +99,12 @@ export default function SearchSidebar({ onClose }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
-            className="w-full pl-8 pr-14 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-black text-black"
+            className="w-full pl-8 pr-14 py-2 border-b-2 border-gray-300 focus:outline-none focus:border-[#1A1A1A] text-[#1A1A1A]"
           />
           {query && (
             <button
               onClick={handleClear}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 text-sm text-gray-600 hover:text-black"
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 text-sm text-gray-600 hover:text-[#1A1A1A]"
             >
               Clear
             </button>
@@ -126,7 +126,7 @@ export default function SearchSidebar({ onClose }) {
               />
 
               <div>
-                <p className="text-black font-semibold">{product.name}</p>
+                <p className="text-[#1A1A1A] font-semibold">{product.name}</p>
                 <p className="text-gray-500 text-sm">
                   {product.category || product.folder}
                 </p>

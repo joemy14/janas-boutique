@@ -55,7 +55,7 @@ export default function AdminOrders() {
   return (
     <div className="min-h-screen bg-[#f7f7f7] flex">
       {/* SIDEBAR */}
-      <aside className="fixed left-0 top-0 h-full w-56 bg-white shadow-md pt-28 pb-10" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
+      <aside className="fixed left-0 top-0 h-full w-56 bg-[#FAF8F5] shadow-md pt-28 pb-10" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
         <div className="flex flex-col gap-4 px-5">
           {[
             { label: "Dashboard", path: "/admindashboard" },
@@ -71,10 +71,10 @@ export default function AdminOrders() {
       </aside>
 
       {/* TOP NAVBAR */}
-      <nav className="bg-white shadow-md w-full fixed top-0 left-0 z-50 pointer-events-none">
+      <nav className="bg-[#FAF8F5] shadow-md w-full fixed top-0 left-0 z-50 pointer-events-none">
         <div className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center pointer-events-auto">
           <div className="flex items-center font-serif gap-3">
-            <button onClick={() => router.push("/")} className="text-black hover:text-gray-700 transition text-2xl flex items-center" title="Go to Home" style={{ backgroundColor: "white", borderRadius: "50%", padding: "4px" }}>
+            <button onClick={() => router.push("/")} className="text-[#1A1A1A] hover:text-gray-700 transition text-2xl flex items-center" title="Go to Home" style={{ backgroundColor: "#F3EBDD", borderRadius: "50%", padding: "4px" }}>
               <AiOutlineHome size={24} />
             </button>
             <span className="text-2xl text-gray-800 font-normal mr-24">Admin Dashboard</span>
@@ -83,19 +83,19 @@ export default function AdminOrders() {
           {/* Profile Dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center gap-1 transition">
-              <div className="bg-white rounded-full p-1 shadow-md">
+              <div className="bg-[#FAF8F5] rounded-full p-1 shadow-md">
                 <BsPerson size={22} className="text-gray-800" />
               </div>
               <FaChevronDown size={14} className={`text-gray-800 transform transition-transform duration-300 ${dropdownOpen ? "rotate-180" : "rotate-0"}`} />
             </button>
 
             {dropdownOpen && (
-              <div className="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
+              <div className="absolute left-0 top-full mt-2 w-64 bg-[#FAF8F5] shadow-lg rounded-lg py-3 px-4 flex flex-col gap-2 z-50" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
                 <div className="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-100 transition">
                   <BsPerson size={18} className="text-gray-800" />
-                  <span className="text-black font-normal text-sm tracking-tight">{admin?.email}</span>
+                  <span className="text-[#1A1A1A] font-normal text-sm tracking-tight">{admin?.email}</span>
                 </div>
-                <button onClick={() => { localStorage.removeItem("currentUser"); router.push("/auth"); }} className="text-left text-black font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition">Sign out</button>
+                <button onClick={() => { localStorage.removeItem("currentUser"); router.push("/auth"); }} className="text-left text-[#1A1A1A] font-normal hover:bg-gray-100 rounded px-2 py-1 text-sm tracking-tight transition">Sign out</button>
               </div>
             )}
           </div>
@@ -106,7 +106,7 @@ export default function AdminOrders() {
       <main className="pt-32 px-6 ml-56 w-full" style={{ fontFamily: "'Playfair Display', 'Times New Roman', Times, serif" }}>
         <h1 className="heading-page mb-6">Orders</h1>
 
-        <div className="overflow-x-auto bg-white rounded-lg shadow-md">
+        <div className="overflow-x-auto bg-[#FAF8F5] rounded-lg shadow-md">
           <table className="min-w-full divide-y divide-gray-300">
             <thead className="bg-gray-200">
               <tr>
@@ -123,7 +123,7 @@ export default function AdminOrders() {
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-gray-300 bg-white text-gray-900">
+            <tbody className="divide-y divide-gray-300 bg-[#FAF8F5] text-gray-900">
               {orders.length === 0 ? (
                 <tr>
                   <td colSpan="10" className="px-4 py-4 text-center text-gray-500">No orders found.</td>

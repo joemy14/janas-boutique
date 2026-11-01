@@ -29,10 +29,10 @@ export default async function handler(req, res) {
     <div style="
       max-width: 560px; 
       margin: auto; 
-      background: #ffffff; 
+      background: #FAF8F5; 
       padding: 40px 30px; 
       border-radius: 16px; 
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 20px rgba(20, 17, 15,0.08);
       border: 1px solid #f0d9cb;
     ">
       
