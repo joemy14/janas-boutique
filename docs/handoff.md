@@ -95,14 +95,22 @@ Deliverables:
 - Admin login: admin accounts are created with password_hash() (PHP). Passwords are never stored as plain text. Login uses password_verify().
 - Roles: admin (owner), staff (workers), customer.
 
-## 8. Files and locations
-- Repo (local): C:\Users\Mayumi\Downloads\jmc\janas-boutique
-  - backend/ (PHP): login.php, stats.php, and older files still to update
-  - frontend/my-app/ (Next.js): components/LoginForm.js, pages/admindashboard.js, others
-- Database: janas_boutique (phpMyAdmin at http://localhost/phpmyadmin)
-- Schema: database/schema.sql (outputs folder)
-- Backend URL used by frontend: http://localhost/janas-boutique/backend/
-- Frontend URL: http://localhost:3000
+## Files and locations
+- Repo root: C:\Users\Mayumi\Downloads\jmc\janas-boutique
+- Active branch: combined (main still has the old frontend at frontend/my-app)
+- Frontend: frontend/ (friend's Next.js + TypeScript code, copied from friend-repo)
+- Backend: backend/ (PHP + MySQL, janas_boutique database)
+- Database SQL: database/schema.sql
+- Frontend env: frontend/.env.local, must contain NEXT_PUBLIC_API_URL=http://localhost/janas-boutique/backend
+- Friend's original repo: C:\Users\Mayumi\Downloads\jmc\friend-repo\jana-s-boutique-ver2.0-main
+
+## Current stage
+- Stage: login works through PHP (verified). Next: lib/orders.ts build error.
+- Prisma removed from frontend/package.json. Remaining Prisma imports: lib/*.ts and pages/api/*.
+
+## Known problems
+- npm run build fails on Prisma imports (expected, being replaced).
+- frontend/my-app was deleted; main branch still has it.
 
 ## 9. Rules for the next AI or person picking this up
 - Keep replies short and in clear steps. The user has ADHD. Give one next action at a time.

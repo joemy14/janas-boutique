@@ -39,11 +39,12 @@ if ((int)$user['is_active'] !== 1) {
 echo json_encode([
     "success" => true,
     "user" => [
-        "id"        => $user['user_id'],
+        "id"        => (int)$user['user_id'],
         "firstName" => $user['first_name'],
         "lastName"  => $user['last_name'],
         "email"     => $email,
-        "role"      => $user['role']   // admin, staff, or customer
+        "role"      => $user['role'], // admin, staff, or customer
+        "isAdmin"   => $user['role'] === 'admin'
     ]
 ]);
 
