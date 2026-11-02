@@ -1,7 +1,8 @@
 <?php
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
+require_once __DIR__ . '/auth_helper.php';
+jb_cors();
 
+header("Content-Type: application/json");
 require_once __DIR__ . "/db.php";
 
 // Optional category filter, e.g. ?folder=tops

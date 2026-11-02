@@ -28,7 +28,7 @@ $sql = "SELECT DATE(created_at) AS date,
           FROM orders
          WHERE status IN ('paid', 'completed')
            AND (created_at >= ? OR ? = '')
-           AND (created_at <= ? OR ? = '')
+           AND (created_at <= CONCAT(?, ' 23:59:59') OR ? = '')
          GROUP BY DATE(created_at)
          ORDER BY date DESC";
 

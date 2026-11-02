@@ -1,13 +1,8 @@
 <?php
-header("Content-Type: application/json; charset=utf-8");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
+require_once __DIR__ . '/auth_helper.php';
+jb_cors();
 
-if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
-    http_response_code(200);
-    exit;
-}
+header("Content-Type: application/json; charset=utf-8");
 
 function respond(int $status, array $body): void
 {
@@ -119,9 +114,9 @@ try {
     $insertItem->close();
 
     $stmt = $conn->prepare(
-        "INSERT INTO payments (order_id, method, amount, status) VALUES (?, ?, ?, 'pending')"
+        "INSERT INTO payments (order_id, method, amount, status) VALUES (?, ?, fn_order_total(?), 'pending')"
     );
-    $stmt->bind_param("isd", $orderId, $paymentMethod, $total);
+    $stmt->bind_param("isi", $orderId, $paymentMethod, $orderId);
     $stmt->execute();
     $stmt->close();
 

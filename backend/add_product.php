@@ -1,128 +1,133 @@
 <?php
-// 🚨 FIRST LINE: no empty lines before this
+require_once __DIR__ . '/auth_helper.php';
+jb_cors();
+jb_require_role(['admin']);
+
+header("Content-Type: application/json; charset=utf-8");
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Allow-Headers: Content-Type");
-
-// Base URL of your backend (adjust if needed)
-$backendURL = "http://localhost/janas-boutique/backend/";
-
-// Connect to DB
-require_once __DIR__ . "/db.php";
-
-// Debug: show which DB we are connected to
-$dbName = $conn->query("SELECT DATABASE()")->fetch_row()[0];
-
-// Get POST data
 $name = trim($_POST['name'] ?? '');
 $description = trim($_POST['description'] ?? '');
-$price = floatval($_POST['price'] ?? 0);
-$stock = intval($_POST['stock'] ?? 0);
-$folder = trim($_POST['folder'] ?? 'misc');
+$priceValue = $_POST['price'] ?? null;
+$price = filter_var($priceValue, FILTER_VALIDATE_FLOAT);
+$stockValue = $_POST['stock'] ?? null;
+$stock = filter_var($stockValue, FILTER_VALIDATE_INT);
+$folder = trim($_POST['folder'] ?? '');
 $image = $_FILES['image'] ?? null;
-$features = trim($_POST['features'] ?? '');
-$stylingTip = trim($_POST['stylingTip'] ?? '');
 
-// Validate required fields
-if (empty($name) || empty($description) || $price <= 0 || $stock < 0 || !$image) {
-    echo json_encode([
-        "success" => false,
-        "message" => "All required fields must be filled and valid",
-        "debug" => [
-            "name" => $name,
-            "description" => $description,
-            "price" => $price,
-            "stock" => $stock,
-            "image_uploaded" => $image ? true : false
-        ]
-    ]);
+foreach (['name', 'description', 'price', 'stock', 'folder'] as $field) {
+    if (!array_key_exists($field, $_POST) || trim((string)$_POST[$field]) === '') {
+        http_response_code(400);
+        echo json_encode(["success" => false, "message" => "Missing required field: {$field}"]);
+        exit;
+    }
+}
+
+if ($price === false || $price <= 0) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Invalid price"]);
+    exit;
+}
+if ($stock === false || $stock < 0) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Invalid stock"]);
+    exit;
+}
+if (!is_array($image) || ($image['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Missing required field: image"]);
+    exit;
+}
+if (($image['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Invalid image upload"]);
     exit;
 }
 
-// Handle nested folders (e.g., "Shoes > Sandals")
-$folderParts = explode(' > ', $folder);
-$folderParts = array_map(function($part) { return strtolower(trim($part)); }, $folderParts);
+$folderParts = array_map(
+    static fn($part) => preg_replace('/[^a-z0-9_-]/', '', strtolower(trim($part))),
+    explode('>', $folder)
+);
+$categoryName = $folderParts[0] ?? '';
+$allowedCategories = ['tops', 'bottoms', 'dresses', 'perfumes', 'shoes', 'accessories'];
+if (!in_array($categoryName, $allowedCategories, true) || in_array('', $folderParts, true)) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Invalid product category"]);
+    exit;
+}
+
+require_once __DIR__ . "/db.php";
+
 $targetDir = __DIR__ . "/images/" . implode('/', $folderParts) . '/';
-
-// Create folder if it doesn't exist
 if (!is_dir($targetDir) && !mkdir($targetDir, 0777, true)) {
-    echo json_encode(["success" => false, "message" => "Failed to create target directory", "debug" => $targetDir]);
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Failed to create image directory"]);
+    $conn->close();
     exit;
 }
 
-// Sanitize filename
-$filename = basename($image['name']);
+$filename = basename((string)$image['name']);
 $filename = preg_replace("/[^a-zA-Z0-9._-]/", "_", $filename);
 $targetFile = $targetDir . $filename;
-
-// Upload image
 if (!move_uploaded_file($image['tmp_name'], $targetFile)) {
-    echo json_encode(["success" => false, "message" => "Image upload failed", "debug" => $targetFile]);
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Image upload failed"]);
+    $conn->close();
     exit;
 }
 
-// Full URL for frontend to load image
-$imageURL = $backendURL . "images/" . implode('/', $folderParts) . "/$filename";
-$folderDB = implode('/', $folderParts); // store folder path like 'shoes/sandals'
+$imagePath = '/backend/images/' . implode('/', $folderParts) . '/' . $filename;
 
-// Prepare INSERT query
-$stmt = $conn->prepare("
-    INSERT INTO products (name, price, image_url, overview, features, stylingTip, folder, stock)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-");
+try {
+    $conn->begin_transaction();
 
-if (!$stmt) {
-    echo json_encode(["success" => false, "message" => "Prepare failed: " . $conn->error]);
-    exit;
-}
+    $categoryId = null;
+    $categoryStmt = $conn->prepare("SELECT category_id FROM categories WHERE name = ? LIMIT 1");
+    $categoryLabel = ucfirst($categoryName);
+    $categoryStmt->bind_param("s", $categoryLabel);
+    $categoryStmt->execute();
+    $category = $categoryStmt->get_result()->fetch_assoc();
+    $categoryStmt->close();
 
-// Bind parameters
-$stmt->bind_param(
-    "sdsssssi",
-    $name,
-    $price,
-    $imageURL,
-    $description,
-    $features,
-    $stylingTip,
-    $folderDB,
-    $stock
-);
+    if ($category) {
+        $categoryId = (int)$category['category_id'];
+    } else {
+        $categoryStmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
+        $categoryStmt->bind_param("s", $categoryLabel);
+        $categoryStmt->execute();
+        $categoryId = (int)$categoryStmt->insert_id;
+        $categoryStmt->close();
+    }
 
-// Execute and debug
-if ($stmt->execute()) {
-    $lastId = $stmt->insert_id;
+    $stmt = $conn->prepare(
+        "INSERT INTO products (category_id, name, description, price, image_path, is_active)
+         VALUES (?, ?, ?, ?, ?, 1)"
+    );
+    $stmt->bind_param("issds", $categoryId, $name, $description, $price, $imagePath);
+    $stmt->execute();
+    $productId = (int)$stmt->insert_id;
+    $stmt->close();
+
+    $sizeStmt = $conn->prepare(
+        "INSERT INTO product_sizes (product_id, size, stock_quantity)
+         VALUES (?, 'ONE', ?)
+         ON DUPLICATE KEY UPDATE stock_quantity = VALUES(stock_quantity)"
+    );
+    $sizeStmt->bind_param("ii", $productId, $stock);
+    $sizeStmt->execute();
+    $sizeStmt->close();
+
+    $conn->commit();
     echo json_encode([
         "success" => true,
         "message" => "Product added successfully",
-        "database" => $dbName,
-        "debug" => [
-            "inserted_id" => $lastId,
-            "imageURL" => $imageURL,
-            "price" => $price,
-            "stock" => $stock,
-            "folder" => $folderDB,
-            "filename" => $filename,
-            "targetDir" => $targetDir,
-            "targetFile_exists" => file_exists($targetFile)
-        ]
+        "debug" => ["inserted_id" => $productId, "imageURL" => $imagePath],
     ]);
-} else {
-    echo json_encode([
-        "success" => false,
-        "message" => "DB insert failed",
-        "error" => $stmt->error,
-        "debug" => [
-            "imageURL" => $imageURL,
-            "price" => $price,
-            "stock" => $stock,
-            "folder" => $folderDB
-        ]
-    ]);
+} catch (Throwable $error) {
+    $conn->rollback();
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Unable to add product"]);
 }
 
 $conn->close();

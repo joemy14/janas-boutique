@@ -5,10 +5,6 @@
 -- Run this file in phpMyAdmin > SQL tab, or import it.
 -- ============================================================
 
-DROP DATABASE IF EXISTS janas_boutique;
-CREATE DATABASE janas_boutique CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE janas_boutique;
-
 -- ------------------------------------------------------------
 -- 1. USERS: customers, admin (owner), staff (sales and inventory)
 -- ------------------------------------------------------------

@@ -1,7 +1,8 @@
 <?php
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
+require_once __DIR__ . '/auth_helper.php';
+jb_cors();
 
+header("Content-Type: application/json");
 require_once __DIR__ . "/db.php";
 
 $products = $conn->query("SELECT COUNT(*) AS n FROM products WHERE is_active = 1")->fetch_assoc()['n'];

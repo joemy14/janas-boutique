@@ -70,7 +70,10 @@ export default apiHandler({
     if (input.data.imageUrl) updatePayload.image_url = input.data.imageUrl;
     const response = await fetch(backendUrl("update_product.php"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: req.headers.cookie || "",
+      },
       body: JSON.stringify(updatePayload),
     });
     const payload = await response.json();
@@ -100,7 +103,10 @@ export default apiHandler({
 
     const response = await fetch(backendUrl("delete_product.php"), {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: req.headers.cookie || "",
+      },
       body: JSON.stringify({ id }),
     });
     const payload = await response.json();

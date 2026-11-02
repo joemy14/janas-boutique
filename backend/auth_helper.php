@@ -105,7 +105,23 @@ function jb_require_role(array $roles): array
 
 function jb_cors(): void
 {
-    header("Access-Control-Allow-Origin: *");
+    $configuredOrigin = getenv("ALLOWED_ORIGIN");
+    $requestOrigin = $_SERVER["HTTP_ORIGIN"] ?? "";
+
+    if ($configuredOrigin !== false && trim($configuredOrigin) !== "") {
+        $configuredOrigin = trim($configuredOrigin);
+        if ($requestOrigin === "" || hash_equals($configuredOrigin, $requestOrigin)) {
+            header("Access-Control-Allow-Origin: " . $configuredOrigin);
+        }
+    } elseif ($requestOrigin !== "") {
+        $requestHost = strtolower((string)parse_url($requestOrigin, PHP_URL_HOST));
+        if (in_array($requestHost, ["localhost", "127.0.0.1", "::1"], true)) {
+            header("Access-Control-Allow-Origin: " . $requestOrigin);
+        }
+    } elseif (in_array($_SERVER["REMOTE_ADDR"] ?? "", ["127.0.0.1", "::1"], true)) {
+        header("Access-Control-Allow-Origin: *");
+    }
+    header("Access-Control-Allow-Credentials: true");
     header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
     header("Access-Control-Allow-Headers: Content-Type, Cookie");
     header("Content-Type: application/json; charset=utf-8");

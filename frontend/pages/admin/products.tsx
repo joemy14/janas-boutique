@@ -12,7 +12,6 @@ interface FormState {
   name: string;
   price: string;
   overview: string;
-  features: string;
   stylingTip: string;
   category: Category | "";
   subcategory: string | null;
@@ -20,19 +19,20 @@ interface FormState {
   imageUrl: string | null;
   /** New image as a data URL, if one was chosen */
   image: string | null;
+  imagePreviewUrl: string | null;
 }
 
 const emptyForm: FormState = {
   name: "",
   price: "",
   overview: "",
-  features: "",
   stylingTip: "",
   category: "",
   subcategory: null,
   stock: "",
   imageUrl: null,
   image: null,
+  imagePreviewUrl: null,
 };
 
 const toForm = (p: Product): FormState => ({
@@ -40,13 +40,13 @@ const toForm = (p: Product): FormState => ({
   name: p.name,
   price: String(p.price),
   overview: p.overview ?? "",
-  features: p.features ? JSON.stringify(p.features) : "",
   stylingTip: p.stylingTip ?? "",
   category: p.category,
   subcategory: p.subcategory,
   stock: String(p.stock),
   imageUrl: p.imageUrl,
   image: null,
+  imagePreviewUrl: null,
 });
 
 const readAsDataUrl = (file: File) =>
@@ -77,6 +77,13 @@ export default function AdminProducts() {
     if (currentUser?.isAdmin) loadProducts();
   }, [currentUser]);
 
+  useEffect(() => {
+    const previewUrl = form?.imagePreviewUrl;
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [form?.imagePreviewUrl]);
+
   // Disable page scrolling while the modal is open
   useEffect(() => {
     document.body.style.overflow = form ? "hidden" : "auto";
@@ -88,11 +95,12 @@ export default function AdminProducts() {
   const update = (patch: Partial<FormState>) => setForm((prev) => (prev ? { ...prev, ...patch } : prev));
 
   const handleImage = async (file: File | undefined) => {
-    if (!file) return update({ image: null });
+    if (!file) return update({ image: null, imagePreviewUrl: null });
     if (file.size > 5 * 1024 * 1024) {
       alert("Image must be 5 MB or smaller.");
       return;
     }
+    update({ imagePreviewUrl: URL.createObjectURL(file) });
     update({ image: await readAsDataUrl(file) });
   };
 
@@ -102,18 +110,25 @@ export default function AdminProducts() {
     const isEdit = form.id !== undefined;
     const data = await api(isEdit ? `/api/products/${form.id}` : "/api/products", {
       method: isEdit ? "PUT" : "POST",
-      body: {
-        name: form.name,
-        price: form.price === "" ? 0 : Number(form.price),
-        overview: form.overview,
-        features: form.features,
-        stylingTip: form.stylingTip,
-        category: form.category,
-        subcategory: form.subcategory,
-        stock: form.stock === "" ? 0 : Number(form.stock),
-        imageUrl: form.imageUrl,
-        image: form.image,
-      },
+      body: isEdit
+        ? {
+            name: form.name,
+            price: form.price === "" ? 0 : Number(form.price),
+            overview: form.overview,
+            category: form.category,
+            subcategory: form.subcategory,
+            stock: form.stock === "" ? 0 : Number(form.stock),
+            imageUrl: form.imageUrl,
+            image: form.image,
+          }
+        : {
+            name: form.name,
+            description: form.overview,
+            price: form.price === "" ? 0 : Number(form.price),
+            stock: form.stock === "" ? 0 : Number(form.stock),
+            folder: folderLabel(form.category, form.subcategory),
+            image: form.image,
+          },
     });
     setSaving(false);
 
@@ -242,111 +257,112 @@ interface ModalProps {
 }
 
 function ProductModal({ form, saving, onChange, onImage, onCancel, onSave, onDelete }: ModalProps) {
-  const [categoryOpen, setCategoryOpen] = useState(false);
-  const [expanded, setExpanded] = useState<Category | null>(null);
+  const [imageFileName, setImageFileName] = useState("");
 
-  const pick = (category: Category, subcategory: string | null) => {
-    onChange({ category, subcategory });
-    setCategoryOpen(false);
-    setExpanded(null);
-  };
-
-  const previewSrc = form.image ?? form.imageUrl;
+  const previewSrc = form.imagePreviewUrl ?? form.image ?? form.imageUrl;
+  const categoryValue = form.category ? `${form.category}|${form.subcategory ?? ""}` : "";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
-      <div className="card custom-scrollbar max-h-[90vh] w-[26rem] overflow-y-auto p-7 text-ink shadow-2xl">
+      <form
+        className="card custom-scrollbar max-h-[90vh] w-[26rem] overflow-y-auto p-7 text-ink shadow-2xl"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSave();
+        }}
+      >
         <h2 className="mb-5 font-display text-3xl font-medium">{onDelete ? "Edit / Delete Product" : "Add Product"}</h2>
 
-        <input className={inputClass} value={form.name} onChange={(e) => onChange({ name: e.target.value })} placeholder="Product Name" />
-        <input className={inputClass} type="number" min="0" value={form.price} onChange={(e) => onChange({ price: e.target.value })} placeholder="Price" />
-        <input className={inputClass} value={form.overview} onChange={(e) => onChange({ overview: e.target.value })} placeholder="Overview" />
-        <input
-          className={inputClass}
-          value={form.features}
-          onChange={(e) => onChange({ features: e.target.value })}
-          placeholder='Size prices (JSON), e.g. {"50ml": 1890}'
-        />
+        <label htmlFor="product-name" className="mb-1 block text-sm text-muted">Name <span className="text-red-500">*</span></label>
+        <input id="product-name" className={inputClass} required value={form.name} onChange={(e) => onChange({ name: e.target.value })} placeholder="Product Name" />
+        <label htmlFor="product-price" className="mb-1 block text-sm text-muted">Price <span className="text-red-500">*</span></label>
+        <input id="product-price" className={inputClass} type="number" min="0" required value={form.price} onChange={(e) => onChange({ price: e.target.value })} placeholder="Price" />
+        <label htmlFor="product-overview" className="mb-1 block text-sm text-muted">Overview <span className="text-red-500">*</span></label>
+        <textarea id="product-overview" className={`${inputClass} min-h-20`} required value={form.overview} onChange={(e) => onChange({ overview: e.target.value })} placeholder="Overview" />
         <input className={inputClass} value={form.stylingTip} onChange={(e) => onChange({ stylingTip: e.target.value })} placeholder="Styling Tip" />
 
-        {/* Category picker with nested subcategories */}
-        <div className="relative mb-3">
-          <button
-            type="button"
-            className="input-field cursor-pointer text-left"
-            onClick={() => setCategoryOpen(!categoryOpen)}
-          >
-            {form.category ? folderLabel(form.category, form.subcategory) : "Select Category"}
-          </button>
-
-          {categoryOpen && (
-            <div className="card absolute z-50 mt-1 flex w-full flex-col shadow-lg">
-              {(Object.keys(CATEGORIES) as Category[]).map((cat) =>
-                CATEGORIES[cat].length === 0 ? (
-                  <button key={cat} className="px-3 py-2 text-left transition hover:bg-surface-2" onClick={() => pick(cat, null)}>
-                    {folderLabel(cat, null)}
-                  </button>
-                ) : (
-                  <div key={cat}>
-                    <button
-                      className="flex w-full items-center justify-between px-3 py-2 text-left transition hover:bg-surface-2"
-                      onClick={() => setExpanded(expanded === cat ? null : cat)}
-                    >
-                      {folderLabel(cat, null)}
-                      <span>{expanded === cat ? "▲" : "▼"}</span>
-                    </button>
-                    {expanded === cat && (
-                      <div className="ml-4 flex flex-col border-l border-line">
-                        {CATEGORIES[cat].map((sub) => (
-                          <button key={sub} className="px-3 py-2 text-left capitalize transition hover:bg-surface-2" onClick={() => pick(cat, sub)}>
-                            {sub}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )
-              )}
-            </div>
+        <label htmlFor="product-category" className="mb-1 block text-sm text-muted">Category <span className="text-red-500">*</span></label>
+        <select
+          id="product-category"
+          className={inputClass}
+          required
+          value={categoryValue}
+          onChange={(event) => {
+            const [category, subcategory = ""] = event.target.value.split("|");
+            onChange({ category: (category || "") as Category | "", subcategory: subcategory || null });
+          }}
+        >
+          <option value="">Select Category</option>
+          {(Object.keys(CATEGORIES) as Category[]).flatMap((category) =>
+            CATEGORIES[category].length === 0
+              ? [<option key={category} value={`${category}|`}>{folderLabel(category, null)}</option>]
+              : CATEGORIES[category].map((subcategory) => (
+                  <option key={`${category}-${subcategory}`} value={`${category}|${subcategory}`}>
+                    {folderLabel(category, subcategory)}
+                  </option>
+                ))
           )}
-        </div>
+        </select>
 
         {/* Image */}
         {previewSrc && (
           <div className="relative mb-2 h-24 w-24">
-            <ProductPhoto src={previewSrc} alt="Preview" fill sizes="96px" className="object-cover" unoptimized />
+            {form.imagePreviewUrl ? (
+              <img src={form.imagePreviewUrl} alt="Preview" className="absolute inset-0 h-full w-full object-cover" />
+            ) : (
+              <ProductPhoto src={previewSrc} alt="Preview" fill sizes="96px" className="object-cover" unoptimized />
+            )}
           </div>
         )}
-        <input
-          type="file"
-          accept="image/png,image/jpeg,image/webp,image/gif"
-          className={inputClass}
-          onChange={(e) => onImage(e.target.files?.[0])}
-        />
+        <label htmlFor="product-image-file" className="mb-1 block text-sm text-muted">Image <span className="text-red-500">*</span></label>
+        <div className="mb-3 flex items-center gap-3">
+          <input
+            id="product-image-file"
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/gif"
+            className="peer sr-only"
+            required={!form.imageUrl}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file && file.size <= 5 * 1024 * 1024) setImageFileName(file.name);
+              else setImageFileName("");
+              onImage(file);
+            }}
+          />
+          <label
+            htmlFor="product-image-file"
+            className="cursor-pointer rounded-sm border border-dashed border-line bg-surface-2 px-4 py-2.5 text-sm text-ink transition-colors hover:border-gold hover:text-gold peer-focus-visible:ring-2 peer-focus-visible:ring-gold"
+          >
+            {imageFileName ? "Change Image" : "Add Image"}
+          </label>
+          {imageFileName && <span className="max-w-48 truncate text-sm text-muted">{imageFileName}</span>}
+        </div>
 
-        <input className={inputClass} type="number" min="0" step="1" value={form.stock} onChange={(e) => onChange({ stock: e.target.value })} placeholder="Stock" />
+        <label htmlFor="product-stock" className="mb-1 block text-sm text-muted">Stock <span className="text-red-500">*</span></label>
+        <input id="product-stock" className={inputClass} type="number" min="0" step="1" required value={form.stock} onChange={(e) => onChange({ stock: e.target.value })} placeholder="Stock" />
 
         <div className="mt-4 flex justify-between gap-2">
           <button
+            type="button"
             className="btn-outline"
             onClick={onCancel}
           >
             Cancel
           </button>
           {onDelete && (
-            <button className="btn-outline !border-accent !text-accent" onClick={onDelete}>
+            <button type="button" className="btn-outline !border-accent !text-accent" onClick={onDelete}>
               Delete
             </button>
           )}
           <button
+            type="submit"
             className="btn"
-            onClick={onSave}
             disabled={saving}
           >
             {saving ? "Saving..." : onDelete ? "Save" : "Add"}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

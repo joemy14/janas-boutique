@@ -57,6 +57,7 @@ The PHP database connection is configured in `backend/db.php` (default local MyS
 - [Query optimization](docs/query-optimization.md)
 - [Transaction demo](docs/transaction-demo.md)
 - [User guide](docs/user-guide.md)
+- [Deployment guide](docs/deployment.md)
 
 ## Current limits
 

@@ -5,7 +5,10 @@ type Props = Omit<ImageProps, "src" | "alt"> & { src: string | null | undefined;
 
 /** next/image for product photos; uploaded images are served by our API and skip optimization. */
 export default function ProductPhoto({ src, alt, ...rest }: Props) {
-  const resolved = imageSrc(src);
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+  const resolved = src?.startsWith("/backend/") && apiBaseUrl
+    ? `${apiBaseUrl}${src}`
+    : imageSrc(src);
   return (
     <Image
       src={resolved}

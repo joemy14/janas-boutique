@@ -16,7 +16,7 @@ export default function AdminOrders() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    if (!currentUser?.isAdmin) return;
+    if (!(currentUser?.isAdmin || currentUser?.role === "admin" || currentUser?.role === "staff")) return;
     api<{ orders: AdminOrder[] }>("/api/orders").then((data) => {
       if (data.success) setOrders(data.orders);
       else console.error("Error fetching orders:", data.message);

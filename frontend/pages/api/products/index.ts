@@ -57,7 +57,15 @@ export default apiHandler({
   async POST(req, res) {
     if (!(await requireAdmin(req, res))) return;
 
-    const input = parseProductInput(req.body);
+    const folderParts = str(req.body?.folder).split(">").map((part) => part.trim().toLowerCase());
+    const category = folderParts[0] ?? "";
+    const subcategory = folderParts.slice(1).join(" > ") || null;
+    const input = parseProductInput({
+      ...req.body,
+      overview: req.body?.description,
+      category,
+      subcategory,
+    });
     if (typeof input === "string") {
       return res.status(400).json({ success: false, message: input });
     }
@@ -68,12 +76,15 @@ export default apiHandler({
     form.set("price", String(input.data.price));
     form.set("stock", String(input.data.stock));
     form.set("folder", folderLabel(input.data.category, input.data.subcategory));
-    form.set("features", JSON.stringify(input.data.features ?? {}));
-    form.set("stylingTip", input.data.stylingTip ?? "");
     if (input.image) {
-      form.set("image", new Blob([input.image.data], { type: input.image.mimeType }), "product-image");
+      const extension = input.image.mimeType === "image/jpeg" ? "jpg" : input.image.mimeType.split("/")[1];
+      form.set("image", new Blob([input.image.data], { type: input.image.mimeType }), `product-image.${extension}`);
     }
-    const response = await fetch(backendUrl("add_product.php"), { method: "POST", body: form });
+    const response = await fetch(backendUrl("add_product.php"), {
+      method: "POST",
+      headers: { Cookie: req.headers.cookie || "" },
+      body: form,
+    });
     const payload = await response.json();
     if (!response.ok || payload.success !== true) {
       return res.status(response.status || 400).json({ success: false, message: payload.message || "Unable to add product." });

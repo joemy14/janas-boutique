@@ -1,111 +1,102 @@
 <?php
+require_once __DIR__ . '/auth_helper.php';
+jb_cors();
+jb_require_role(['admin']);
+
+header("Content-Type: application/json; charset=utf-8");
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
-error_reporting(E_ALL);
-
-header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-
-// handle preflight request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
 
 $data = json_decode(file_get_contents("php://input"), true);
-if (!$data) {
-    echo json_encode(["success" => false, "message" => "No data received"]);
+if (!is_array($data)) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Invalid JSON request"]);
+    exit;
+}
+
+$id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT);
+$name = trim((string)($data['name'] ?? ''));
+$description = trim((string)($data['overview'] ?? ''));
+$price = filter_var($data['price'] ?? null, FILTER_VALIDATE_FLOAT);
+$folder = trim((string)($data['folder'] ?? ''));
+$stockProvided = array_key_exists('stock', $data) && $data['stock'] !== null;
+$stock = $stockProvided ? filter_var($data['stock'], FILTER_VALIDATE_INT) : null;
+$imagePath = isset($data['image_url']) ? trim((string)$data['image_url']) : null;
+
+if ($id === false || $id < 1 || $name === '' || $price === false || $price < 0 ||
+    ($stockProvided && ($stock === false || $stock < 0))) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Invalid product fields"]);
+    exit;
+}
+
+$folderParts = array_map(
+    static fn($part) => preg_replace('/[^a-z0-9_-]/', '', strtolower(trim($part))),
+    explode('>', $folder)
+);
+$categoryName = $folderParts[0] ?? '';
+$allowedCategories = ['tops', 'bottoms', 'dresses', 'perfumes', 'shoes', 'accessories'];
+if (!in_array($categoryName, $allowedCategories, true)) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "Invalid product category"]);
     exit;
 }
 
 require_once __DIR__ . "/db.php";
 
-// Validate required fields (exclude image_url)
-$required = ['id', 'name', 'price', 'overview', 'features', 'stylingTip', 'folder'];
-foreach ($required as $field) {
-    if (!isset($data[$field])) {
-        echo json_encode(["success" => false, "message" => "Missing field: $field"]);
-        exit;
+try {
+    $conn->begin_transaction();
+
+    $categoryLabel = ucfirst($categoryName);
+    $categoryStmt = $conn->prepare("SELECT category_id FROM categories WHERE name = ? LIMIT 1");
+    $categoryStmt->bind_param("s", $categoryLabel);
+    $categoryStmt->execute();
+    $category = $categoryStmt->get_result()->fetch_assoc();
+    $categoryStmt->close();
+
+    if ($category) {
+        $categoryId = (int)$category['category_id'];
+    } else {
+        $categoryStmt = $conn->prepare("INSERT INTO categories (name) VALUES (?)");
+        $categoryStmt->bind_param("s", $categoryLabel);
+        $categoryStmt->execute();
+        $categoryId = (int)$categoryStmt->insert_id;
+        $categoryStmt->close();
     }
-}
 
-// Sanitize and validate
-$id = intval($data['id']);
-if ($id <= 0) {
-    echo json_encode(["success" => false, "message" => "Invalid product ID"]);
-    exit;
-}
+    $sql = "UPDATE products SET name = ?, description = ?, price = ?, category_id = ?, is_active = 1";
+    if ($imagePath !== null) {
+        $sql .= ", image_path = ?";
+    }
+    $sql .= " WHERE product_id = ?";
 
-$name = trim($data['name']);
-$overview = trim($data['overview']);
-$stylingTip = trim($data['stylingTip']);
-$folder = trim($data['folder']);
+    $stmt = $conn->prepare($sql);
+    if ($imagePath !== null) {
+        $stmt->bind_param("ssdisi", $name, $description, $price, $categoryId, $imagePath, $id);
+    } else {
+        $stmt->bind_param("ssdii", $name, $description, $price, $categoryId, $id);
+    }
+    $stmt->execute();
+    $stmt->close();
 
-// Optional image_url: only update if provided
-$image_url = isset($data['image_url']) ? trim($data['image_url']) : null;
+    if ($stockProvided) {
+        $sizeStmt = $conn->prepare(
+            "INSERT INTO product_sizes (product_id, size, stock_quantity)
+             VALUES (?, 'ONE', ?)
+             ON DUPLICATE KEY UPDATE stock_quantity = VALUES(stock_quantity)"
+        );
+        $sizeStmt->bind_param("ii", $id, $stock);
+        $sizeStmt->execute();
+        $sizeStmt->close();
+    }
 
-// Validate price
-if (!is_numeric($data['price'])) {
-    echo json_encode(["success" => false, "message" => "Invalid price"]);
-    exit;
-}
-$price = floatval($data['price']);
-
-// Validate features as JSON array
-$featuresJson = trim($data['features']);
-$featuresArray = json_decode($featuresJson, true);
-if (!is_array($featuresArray)) {
-    echo json_encode(["success" => false, "message" => "Features must be a valid JSON array"]);
-    exit;
-}
-$featuresJson = json_encode($featuresArray, JSON_UNESCAPED_UNICODE);
-
-// Validate stock if provided
-$stock = isset($data['stock']) ? intval($data['stock']) : null;
-if ($stock !== null && !is_numeric($data['stock'])) {
-    echo json_encode(["success" => false, "message" => "Invalid stock"]);
-    exit;
-}
-
-// Build SQL dynamically
-$sql = "UPDATE products SET name=?, price=?, overview=?, features=?, stylingTip=?, folder=?";
-$params = [$name, $price, $overview, $featuresJson, $stylingTip, $folder];
-$types = "sdssss";
-
-if ($image_url !== null) {
-    $sql .= ", image_url=?";
-    $params[] = $image_url;
-    $types .= "s";
-}
-
-if ($stock !== null) {
-    $sql .= ", stock=?";
-    $params[] = $stock;
-    $types .= "i";
-}
-
-$sql .= " WHERE product_id=?";
-$params[] = $id;
-$types .= "i";
-
-// Prepare and bind
-$stmt = $conn->prepare($sql);
-if (!$stmt) {
-    echo json_encode(["success" => false, "message" => "Prepare failed: " . $conn->error]);
-    exit;
-}
-
-$stmt->bind_param($types, ...$params);
-
-// Execute
-if ($stmt->execute()) {
+    $conn->commit();
     echo json_encode(["success" => true, "message" => "Product updated"]);
-} else {
-    echo json_encode(["success" => false, "message" => $stmt->error]);
+} catch (Throwable $error) {
+    $conn->rollback();
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Unable to update product"]);
 }
 
-$stmt->close();
 $conn->close();
 ?>

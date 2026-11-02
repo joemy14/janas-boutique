@@ -56,14 +56,15 @@ function sign(value: string) {
 }
 
 function serializeCookie(value: string, maxAge: number) {
+  const isProduction = process.env.APP_ENV === "production";
   const parts = [
     `${SESSION_COOKIE}=${value}`,
     "Path=/",
     "HttpOnly",
-    "SameSite=Lax",
+    `SameSite=${isProduction ? "None" : "Lax"}`,
     `Max-Age=${maxAge}`,
   ];
-  if (process.env.NODE_ENV === "production") parts.push("Secure");
+  if (isProduction) parts.push("Secure");
   return parts.join("; ");
 }
 
