@@ -2,6 +2,7 @@
 
 ## Current stage
 
+- Docs: Added query-optimization.md and transaction-demo.md.
 - Done: login and registration through PHP (verified). Products routes through PHP (verified: `/tops` and `/api/products` show database data). Admin login works.
 - In progress: checkout. `backend/checkout.php` is written and the orders INSERT binds `"id"` with `$userId` and `$total` (confirmed). It inserts orders, order_items, and one pending payment; the AFTER INSERT trigger lowers stock and rewrites `orders.total_amount` from `fn_order_total`. NOT yet exercised end-to-end in the UI.
 - Not started: orders list, customer order history, admin stats, reports, QR payment in the footer and checkout (default still "GCash"), in-store staff sales page, remove `lib/prisma.ts` stub, EXPLAIN examples, transaction demo, ERD and data dictionary, user guide, deployment.
