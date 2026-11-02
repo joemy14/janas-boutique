@@ -25,6 +25,11 @@ export default function AdminLayout({ title = "Admin Dashboard", children }: { t
   const isStaff = currentUser?.role === "staff";
   const canAccessAdminArea = isAdmin || isStaff;
   const navItems = isAdmin ? [...NAV_ITEMS, STAFF_SALES_ITEM] : isStaff ? [STAFF_SALES_ITEM] : [];
+  const reportItems = [
+    { label: "Low Stock", path: "/admin/reports/low-stock", visible: canAccessAdminArea },
+    { label: "Sales", path: "/admin/reports/sales", visible: isAdmin },
+    { label: "Top Products", path: "/admin/reports/top-products", visible: isAdmin },
+  ].filter((item) => item.visible);
 
   useEffect(() => {
     if (!loading && !canAccessAdminArea) router.replace("/adminlogin");
@@ -54,6 +59,27 @@ export default function AdminLayout({ title = "Admin Dashboard", children }: { t
               </Link>
             );
           })}
+          {reportItems.length > 0 && (
+            <div className="mt-5">
+              <p className="px-4 pb-2 font-display text-xs font-semibold tracking-[0.2em] text-muted uppercase">
+                Reports
+              </p>
+              {reportItems.map((item) => {
+                const active = router.pathname.startsWith(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    href={item.path}
+                    className={`block rounded-sm border-l-2 px-4 py-2.5 font-display text-lg transition-colors ${
+                      active ? "border-gold bg-surface-2 text-ink" : "border-transparent text-muted hover:bg-surface-2 hover:text-ink"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </nav>
       </aside>
 
