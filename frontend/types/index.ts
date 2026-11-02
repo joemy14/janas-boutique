@@ -18,6 +18,7 @@ export interface Product {
   overview: string | null;
   /** Optional size label -> price map (perfumes) */
   features: Record<string, number> | null;
+  available_sizes?: string[];
   stylingTip: string | null;
   imageUrl: string | null;
 }
@@ -33,6 +34,7 @@ export interface SessionUser {
   firstName: string;
   lastName: string;
   isAdmin: boolean;
+  role?: "admin" | "staff" | "customer";
 }
 
 export interface OrderItemDTO {

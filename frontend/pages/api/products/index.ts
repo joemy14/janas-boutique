@@ -26,6 +26,9 @@ function normalizeProduct(row: Record<string, unknown>): Product {
     stock: Number(row.stock ?? 0),
     overview: str(row.overview) || null,
     features: parseFeatures(row.features),
+    available_sizes: Array.isArray(row.available_sizes)
+      ? row.available_sizes.filter((size): size is string => typeof size === "string")
+      : [],
     stylingTip: str(row.stylingTip) || null,
     imageUrl: str(row.image_url) || null,
   };

@@ -12,21 +12,25 @@ const NAV_ITEMS = [
   { label: "Products", path: "/admin/products" },
   { label: "Customers", path: "/admin/customers" },
 ];
+const STAFF_SALES_ITEM = { label: "In-store sales", path: "/admin/staffsales" };
 
 /**
- * Sidebar + top bar shared by every admin page. Redirects non-admins to the
- * admin login (the API routes enforce this server-side too).
+ * Sidebar + top bar shared by admin pages. Redirects unauthorized users to
+ * the admin login (the API routes enforce this server-side too).
  */
 export default function AdminLayout({ title = "Admin Dashboard", children }: { title?: string; children: ReactNode }) {
   const router = useRouter();
   const { currentUser, loading, logout } = useAuth();
-  const isAdmin = !!currentUser?.isAdmin;
+  const isAdmin = !!currentUser?.isAdmin || currentUser?.role === "admin";
+  const isStaff = currentUser?.role === "staff";
+  const canAccessAdminArea = isAdmin || isStaff;
+  const navItems = isAdmin ? [...NAV_ITEMS, STAFF_SALES_ITEM] : isStaff ? [STAFF_SALES_ITEM] : [];
 
   useEffect(() => {
-    if (!loading && !isAdmin) router.replace("/adminlogin");
-  }, [loading, isAdmin, router]);
+    if (!loading && !canAccessAdminArea) router.replace("/adminlogin");
+  }, [loading, canAccessAdminArea, router]);
 
-  if (!isAdmin) return null;
+  if (!canAccessAdminArea) return null;
 
   return (
     <div className="flex min-h-screen bg-paper text-ink">
@@ -36,7 +40,7 @@ export default function AdminLayout({ title = "Admin Dashboard", children }: { t
           <Wordmark size="sm" />
         </Link>
         <nav className="flex flex-col gap-1 px-4 py-6">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const active = router.pathname.startsWith(item.path);
             return (
               <Link
