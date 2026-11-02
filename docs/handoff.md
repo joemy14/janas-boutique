@@ -1,18 +1,14 @@
 # Project handoff
 
-## Current state
+## Current stage
 
-- Repository: Jana's Boutique; active branch seen during this handoff: `combined`.
-- `backend/` contains the PHP API. Use `backend/db.php` as the shared MySQL connection; its default database name is `janas_boutique`.
-- `frontend/` contains the Next.js app. Start it from that directory with `npm run dev` after installing dependencies.
-- The intended fresh setup imports `database/schema.sql`, but **that file is missing from this checkout**. Add or locate the authoritative schema before relying on a clean-machine setup.
-- The frontend includes remaining Prisma-backed API routes for products, orders/checkout, and admin stats. The PHP backend's login and stats endpoints exist, but this does not mean the full application has been migrated or verified.
+- Done: login and registration through PHP (verified). Products routes through PHP (verified: `/tops` and `/api/products` show database data). Admin login works.
+- In progress: checkout. `backend/checkout.php` is written (accepts province, zip, items; inserts orders, order_items, one pending payment; the trigger lowers stock). The orders INSERT was changed to store `total_amount`. NOT TESTED.
+  - Pending check: bind_param for the orders INSERT must be `"id"` with `$userId` and `$total`.
+- Not started: orders list, customer order history, admin stats, reports, QR payment in the footer and checkout (default still "GCash"), in-store staff sales page, remove `lib/prisma.ts` stub, stored procedures and triggers for the rubric, EXPLAIN examples, transaction demo, ERD and data dictionary, deployment.
+- Build: `npm run build` is blocked by the `lib/prisma.ts` stub and other routes that still import Prisma (checkout, orders, customers, product images, stats).
 
-## Known limits
-
-- Products, orders, checkout, and admin totals are not migrated yet.
-- Do not treat product/order/checkout/admin-total flows as complete until their data access is migrated and exercised against the PHP/MySQL backend.
-- The repository does not include `database/schema.sql` at present, so fresh database initialization is blocked until it is supplied.
+The intended fresh setup imports `database/schema.sql`, but **that file is missing from this checkout**. Obtain the authoritative schema before relying on a clean database setup.
 
 ## New-computer setup
 

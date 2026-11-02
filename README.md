@@ -50,4 +50,9 @@ The PHP database connection is configured in `backend/db.php` (default local MyS
 
 ## Current limits
 
-Products, orders, checkout, and admin totals are not migrated yet. See [docs/handoff.md](docs/handoff.md) before continuing development.
+- Done: login and registration through PHP (verified); products routes through PHP (verified: `/tops` and `/api/products` show database data); admin login works.
+- In progress: checkout. `backend/checkout.php` is written and inserts orders, order items, and one pending payment; the trigger lowers stock. The orders INSERT stores `total_amount`. Checkout is NOT TESTED; verify its `bind_param` is `"id"` with `$userId` and `$total`.
+- Not started: orders list and customer order history, admin stats and reports, QR payment in the footer and checkout (default still "GCash"), in-store staff sales page, removing the `lib/prisma.ts` stub, rubric stored procedures and triggers, EXPLAIN examples, transaction demo, ERD and data dictionary, and deployment.
+- Build: `npm run build` is blocked by the `lib/prisma.ts` stub and routes that still import Prisma (checkout, orders, customers, product images, stats).
+
+See [docs/handoff.md](docs/handoff.md) for the full project status and setup notes.
