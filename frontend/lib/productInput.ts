@@ -8,7 +8,6 @@ export interface ParsedImage {
   mimeType: string;
   data: Uint8Array<ArrayBuffer>;
 }
-
 type ProductCreateData = {
   name: string;
   category: string;
@@ -80,6 +79,3 @@ export function parseProductInput(body: unknown): ProductInput | string {
     image,
   };
 }
-
-export const productImageUrl = (productId: number) =>
-  `/api/product-images/${productId}?v=${Date.now()}`;
