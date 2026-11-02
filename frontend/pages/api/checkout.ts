@@ -1,14 +1,16 @@
-import crypto from "node:crypto";
 import { apiHandler, str } from "@/lib/api";
 import { requireUser } from "@/lib/auth";
 import { receiptEmail, sendMail } from "@/lib/mailer";
-import { serializeOrder } from "@/lib/orders";
-import { prisma } from "@/lib/prisma";
-import { parseFeatures, SHIPPING_COST } from "@/lib/products";
+import { SHIPPING_COST } from "@/lib/products";
+import type { OrderDTO } from "@/types";
 
-class CheckoutError extends Error {}
+const PAYMENT_METHODS = ["qr", "cash"];
 
-const PAYMENT_METHODS = ["GCash"];
+function backendUrl(file: string) {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+  if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not configured");
+  return `${baseUrl}/${file}`;
+}
 
 export default apiHandler({
   async POST(req, res) {
@@ -26,7 +28,7 @@ export default apiHandler({
       phone: str(b.phone),
       country: str(b.country) || "Philippines",
     };
-    if (Object.values(shipping).some((v) => !v)) {
+    if (Object.values(shipping).some((value) => !value)) {
       return res.status(400).json({ success: false, message: "Please fill in all required fields!" });
     }
 
@@ -36,81 +38,103 @@ export default apiHandler({
     }
 
     const requested: { productId: number; quantity: number; size: string | null }[] = Array.isArray(b.items)
-      ? b.items.map((i: Record<string, unknown>) => ({
-          productId: Number(i?.productId),
-          quantity: Number(i?.quantity),
-          size: str(i?.size) || null,
+      ? b.items.map((item: Record<string, unknown>) => ({
+          productId: Number(item?.productId),
+          quantity: Number(item?.quantity),
+          size: str(item?.size) || null,
         }))
       : [];
     if (
       requested.length === 0 ||
-      requested.some((i) => !Number.isInteger(i.productId) || !Number.isInteger(i.quantity) || i.quantity < 1)
+      requested.some((item) => !Number.isInteger(item.productId) || !Number.isInteger(item.quantity) || item.quantity < 1)
     ) {
       return res.status(400).json({ success: false, message: "Your cart is empty!" });
     }
 
-    try {
-      const order = await prisma.$transaction(async (tx) => {
-        const products = await tx.product.findMany({
-          where: { id: { in: requested.map((i) => i.productId) } },
-        });
-        const byId = new Map(products.map((p) => [p.id, p]));
-
-        const items = [];
-        for (const line of requested) {
-          const product = byId.get(line.productId);
-          if (!product) throw new CheckoutError("A product in your cart is no longer available.");
-
-          // Decrement only if enough stock remains, so concurrent orders can't oversell.
-          const { count } = await tx.product.updateMany({
-            where: { id: product.id, stock: { gte: line.quantity } },
-            data: { stock: { decrement: line.quantity } },
-          });
-          if (!count) throw new CheckoutError(`Not enough stock for ${product.name}.`);
-
-          // Prices always come from the database, never from the client.
-          const sizePrice = line.size ? parseFeatures(product.features)?.[line.size] : undefined;
-          items.push({
-            productId: product.id,
-            name: product.name,
-            imageUrl: product.imageUrl,
-            size: line.size,
-            quantity: line.quantity,
-            unitPrice: sizePrice ?? Number(product.price),
-          });
-        }
-
-        const subtotal = items.reduce((sum, i) => sum + i.unitPrice * i.quantity, 0);
-
-        return tx.order.create({
-          data: {
-            ...shipping,
-            orderNumber: `ORD-${Date.now()}-${crypto.randomInt(1000, 9999)}`,
-            billingId: `BILL-${crypto.randomInt(100000, 999999)}`,
-            userId: user.id,
-            email: user.email,
-            paymentMethod,
-            shippingCost: SHIPPING_COST,
-            totalAmount: subtotal + SHIPPING_COST,
-            items: { create: items },
-          },
-          include: { items: true },
-        });
-      });
-
-      const dto = serializeOrder(order);
-
-      // The order is already saved; a failed receipt email shouldn't fail checkout.
-      sendMail(dto.email, `Your Jana Boutique receipt — ${dto.orderNumber}`, receiptEmail(dto)).catch((err) =>
-        console.error("Failed to send receipt:", err)
-      );
-
-      return res.status(201).json({ success: true, order: dto });
-    } catch (err) {
-      if (err instanceof CheckoutError) {
-        return res.status(409).json({ success: false, message: err.message });
-      }
-      throw err;
+    const productResponse = await fetch(backendUrl("getProducts.php"));
+    const productPayload = await productResponse.json();
+    if (!productResponse.ok || productPayload.success !== true) {
+      throw new Error(productPayload.message || "Unable to load products for checkout.");
     }
+    const products = new Map<number, Record<string, unknown>>(
+      (productPayload.products as Record<string, unknown>[]).map((product) => [Number(product.id), product])
+    );
+    const cart = [];
+    for (const line of requested) {
+      const product = products.get(line.productId);
+      if (!product) {
+        return res.status(409).json({ success: false, message: "A product in your cart is no longer available." });
+      }
+      const features = product.features && typeof product.features === "object"
+        ? product.features as Record<string, unknown>
+        : {};
+      const sizePrice = line.size ? Number(features[line.size]) : NaN;
+      const price = Number.isFinite(sizePrice) ? sizePrice : Number(product.price);
+      cart.push({
+        id: line.productId,
+        name: str(product.name),
+        image: str(product.image_url) || str(product.imageUrl),
+        quantity: line.quantity,
+        price,
+        size: line.size,
+      });
+    }
+
+    const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const phpResponse = await fetch(backendUrl("checkout.php"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...shipping,
+        email: user.email,
+        state: shipping.province,
+        zipcode: shipping.zip,
+        cart,
+        total: subtotal + SHIPPING_COST,
+        shippingCost: SHIPPING_COST,
+        paymentMethod,
+      }),
+    });
+    const result = await phpResponse.json();
+    if (!phpResponse.ok || result.success !== true) {
+      const message = result.message || "Unable to place your order.";
+      const conflict = /stock|available|not found/i.test(message);
+      return res.status(conflict ? 409 : phpResponse.status || 502).json({ success: false, message });
+    }
+
+    const savedOrder = result.order ?? {};
+    const rawItems = Array.isArray(savedOrder.items) ? savedOrder.items : cart;
+    const orderNumber = str(savedOrder.orderId) || `ORD-${Date.now()}`;
+    const dto: OrderDTO = {
+      id: Number(orderNumber.match(/\d+$/)?.[0] ?? Date.now()),
+      orderNumber,
+      email: user.email,
+      firstName: shipping.firstName,
+      lastName: shipping.lastName,
+      address: shipping.address,
+      city: shipping.city,
+      province: shipping.province,
+      zip: shipping.zip,
+      phone: shipping.phone,
+      paymentMethod,
+      shippingCost: Number(savedOrder.shippingCost ?? SHIPPING_COST),
+      totalAmount: Number(savedOrder.total ?? subtotal + SHIPPING_COST),
+      createdAt: new Date().toISOString(),
+      items: rawItems.map((item: Record<string, unknown>, index: number) => ({
+        id: Number(item.id ?? index + 1),
+        productId: Number(item.productId ?? item.id) || null,
+        name: str(item.name),
+        imageUrl: str(item.imageUrl) || str(item.image) || null,
+        size: str(item.size) || null,
+        quantity: Number(item.quantity),
+        unitPrice: Number(item.unitPrice ?? item.price),
+      })),
+    };
+
+    sendMail(dto.email, `Your Jana Boutique receipt — ${dto.orderNumber}`, receiptEmail(dto)).catch((err) =>
+      console.error("Failed to send receipt:", err)
+    );
+
+    return res.status(201).json({ success: true, order: dto });
   },
 });
