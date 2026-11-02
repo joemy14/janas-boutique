@@ -26,17 +26,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  // Admins only browse the admin area.
-  useEffect(() => {
-    if (
-      currentUser?.isAdmin &&
-      !router.pathname.startsWith("/admin") &&
-      router.pathname !== "/admindashboard"
-    ) {
-      router.replace("/admindashboard");
-    }
-  }, [currentUser, router]);
-
   const login = useCallback(
     (user: SessionUser) => {
       setCurrentUser(user);

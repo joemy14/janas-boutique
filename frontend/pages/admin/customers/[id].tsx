@@ -38,7 +38,24 @@ export default function CustomerProfile() {
         </Link>
 
         {loading ? (
-          <p>Loading customer info...</p>
+          <div role="status" aria-busy="true" aria-label="Loading customer information">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="h-8 w-8 animate-pulse rounded-full bg-surface-2" />
+              <div className="h-10 w-64 animate-pulse rounded bg-surface-2" />
+            </div>
+            <div className="card space-y-4 p-8" aria-hidden="true">
+              <div className="h-5 w-1/2 animate-pulse rounded bg-surface-2" />
+              <div className="h-4 w-20 animate-pulse rounded bg-surface-2" />
+              <div className="space-y-4">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="space-y-2 border-b border-line pb-3">
+                    <div className="h-4 w-3/4 animate-pulse rounded bg-surface-2" />
+                    <div className="h-4 w-1/3 animate-pulse rounded bg-surface-2" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         ) : !customer ? (
           <p>{error || "Customer not found."}</p>
         ) : (

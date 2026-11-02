@@ -63,7 +63,27 @@ export default function Profile() {
         <h1 className="mt-2 mb-10 font-display text-5xl font-medium">Order History</h1>
 
         {ordersLoading ? (
-          <p className="text-muted italic">Loading orders...</p>
+          <div className="space-y-6" role="status" aria-busy="true" aria-label="Loading order history">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <article key={index} className="card space-y-4 p-6" aria-hidden="true">
+                <div className="mb-4 flex items-baseline justify-between gap-2 border-b border-line pb-3">
+                  <div className="h-5 w-32 animate-pulse rounded bg-surface-2" />
+                  <div className="h-4 w-40 animate-pulse rounded bg-surface-2" />
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-16 w-14 animate-pulse bg-surface-2" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-5 w-1/2 animate-pulse rounded bg-surface-2" />
+                    <div className="h-4 w-1/3 animate-pulse rounded bg-surface-2" />
+                  </div>
+                </div>
+                <div className="mt-4 space-y-2 border-t border-line pt-3">
+                  <div className="h-4 w-full animate-pulse rounded bg-surface-2" />
+                  <div className="h-6 w-full animate-pulse rounded bg-surface-2" />
+                </div>
+              </article>
+            ))}
+          </div>
         ) : orders.length === 0 ? (
           <div className="card flex h-64 flex-col items-center justify-center gap-4 text-center">
             <p className="font-display text-2xl italic">No orders yet</p>

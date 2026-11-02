@@ -41,7 +41,7 @@ export default function AdminLayout({ title = "Admin Dashboard", children }: { t
     <div className="flex min-h-screen bg-paper text-ink">
       {/* Sidebar */}
       <aside className="fixed top-0 left-0 flex h-full w-60 flex-col border-r border-line bg-surface">
-        <Link href="/admindashboard" className="flex justify-center border-b border-line py-6" aria-label="Dashboard">
+        <Link href="/" className="flex justify-center border-b border-line py-6" aria-label="Storefront home">
           <Wordmark size="sm" />
         </Link>
         <nav className="flex flex-col gap-1 px-4 py-6">

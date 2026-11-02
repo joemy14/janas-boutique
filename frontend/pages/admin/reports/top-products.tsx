@@ -28,7 +28,29 @@ export default function TopProductsReport() {
     <AdminLayout title="Top Products Report">
       <div className="card overflow-x-auto">
         {loading ? (
-          <p className="p-4">Loading...</p>
+          <div className="p-4" aria-busy="true">
+            <span className="sr-only">Loading top-products report</span>
+            <table className="min-w-full divide-y divide-line" aria-hidden="true">
+              <thead className="bg-surface-2">
+                <tr>
+                  {["Product Name", "Units Sold", "Revenue"].map((heading) => (
+                    <th key={heading} className={th}>{heading}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-line">
+                {Array.from({ length: 4 }).map((_, row) => (
+                  <tr key={row}>
+                    {["w-2/3", "w-1/4", "w-1/3"].map((width, column) => (
+                      <td key={column} className={td}>
+                        <div className={`h-4 ${width} animate-pulse rounded bg-surface-2`} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : error ? (
           <p className="p-4 text-accent">{error}</p>
         ) : rows.length === 0 ? (

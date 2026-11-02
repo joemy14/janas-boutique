@@ -42,9 +42,21 @@ export default function CategoryPage({ category, subcategory, breadcrumb }: Prop
         <div className="mt-4 h-px w-24 bg-gold" />
       </header>
 
-      <main className="mx-auto grid max-w-[1400px] grid-cols-1 gap-8 px-6 pt-6 pb-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <main
+        className="mx-auto grid max-w-[1400px] grid-cols-1 gap-8 px-6 pt-6 pb-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+        aria-busy={loading}
+      >
         {loading ? (
-          <p className="text-muted italic">Loading the collection...</p>
+          Array.from({ length: 8 }).map((_, index) => (
+            <article key={index} className="card w-full overflow-hidden" aria-hidden="true">
+              <div className="aspect-[3/4] w-full animate-pulse bg-surface-2" />
+              <div className="space-y-2 px-4 py-4">
+                <div className="h-3 w-1/3 animate-pulse rounded bg-surface-2" />
+                <div className="h-6 w-3/4 animate-pulse rounded bg-surface-2" />
+                <div className="h-4 w-1/4 animate-pulse rounded bg-surface-2" />
+              </div>
+            </article>
+          ))
         ) : products.length === 0 ? (
           <p className="text-muted italic">No pieces here yet — check back soon.</p>
         ) : (

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { AiOutlineHome } from "react-icons/ai";
 import { FaChevronDown } from "react-icons/fa";
 import ProductPhoto from "@/components/ProductPhoto";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -13,7 +12,7 @@ import { api } from "@/lib/fetcher";
 import { SHIPPING_COST } from "@/lib/products";
 import type { OrderDTO } from "@/types";
 
-const paymentOptions = [{ name: "QR", logo: "/images/GCASH.png" }];
+const paymentOptions = [{ name: "QR", logo: "/images/QR.png" }];
 
 function toDatabaseSize(size: string | null): "S" | "M" | "L" | "XL" | "ONE" {
   const normalized = size?.trim().toUpperCase() ?? "";
@@ -138,30 +137,15 @@ export default function Checkout() {
     router.push("/thankyou");
   };
 
-  const handleCancel = () => {
-    clearCart();
-    if (currentUser) {
-      try {
-        localStorage.removeItem(savedInfoKey(currentUser.email));
-      } catch {
-        // ignore
-      }
-    }
-    setInfo(emptyInfo);
-    setRememberMe(false);
-  };
-
   return (
     <div className="min-h-screen bg-paper text-ink">
       {/* Header */}
       <header className="fixed top-0 left-0 z-50 w-full border-b border-line bg-paper/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" aria-label="Back to the shop" className="flex w-36 items-center gap-3 text-muted transition-colors hover:text-gold">
-            <AiOutlineHome size={22} />
-            <span className="font-display text-sm tracking-[0.2em] uppercase">Shop</span>
+        <div className="relative mx-auto flex max-w-6xl items-center justify-center px-6 py-4">
+          <Link href="/" aria-label="Jana's Boutique home">
+            <Wordmark size="sm" />
           </Link>
-          <Wordmark size="sm" />
-          <div className="flex w-36 justify-end">
+          <div className="absolute right-6 flex items-center">
             <ThemeToggle />
           </div>
         </div>
@@ -174,7 +158,7 @@ export default function Checkout() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.3fr_1fr]">
           {/* Form */}
           <section className="card space-y-4 p-8">
-            {alert && <div className="rounded-sm border border-accent/40 bg-accent/10 p-3 text-accent">{alert}</div>}
+            {alert && <div role="alert" className="rounded-sm border border-accent/40 bg-accent/10 p-3 text-accent">{alert}</div>}
 
             {/* Country */}
             <div className="relative">
@@ -294,7 +278,7 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <button type="button" onClick={handleCancel} className="btn-outline w-full">
+              <button type="button" onClick={() => router.push("/")} className="btn-outline w-full">
                 Cancel Order
               </button>
             </div>
@@ -326,7 +310,7 @@ export default function Checkout() {
             </div>
 
             <div className="flex justify-center border-t border-line p-4">
-              <Image src="/images/GCASH.png" alt="QR payment logo" width={96} height={40} className="h-auto w-24" />
+              <Image src="/images/QR.png" alt="QR Payment" width={96} height={40} className="h-auto w-24" />
             </div>
           </div>
         </div>

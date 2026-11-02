@@ -196,7 +196,13 @@ export default function QuickViewModal({ product, onClose }: Props) {
 
           {!currentUser?.isAdmin && (
             <div className="flex gap-3">
-              <button className="btn flex-1" onClick={() => add(quantity)} disabled={outOfStock}>
+              <button
+                className="btn flex-1"
+                onClick={() => {
+                  if (add(quantity)) handleClose();
+                }}
+                disabled={outOfStock}
+              >
                 {outOfStock ? "Out of Stock" : "Add to Bag"}
               </button>
               <button className="btn-outline flex-1" onClick={handleBuyNow} disabled={outOfStock}>

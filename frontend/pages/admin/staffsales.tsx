@@ -114,19 +114,24 @@ export default function StaffSales() {
           <div className="grid gap-4 md:grid-cols-3">
             <label className="space-y-1 text-sm">
               <span>Product</span>
-              <select
-                className="input-field w-full"
-                value={selectedProductId}
-                onChange={(event) => handleProductChange(event.target.value)}
-                disabled={productsLoading}
-              >
-                <option value="">{productsLoading ? "Loading products..." : "Select a product"}</option>
-                {products.map((product) => (
-                  <option key={product.id} value={product.id}>
-                    {product.name}
-                  </option>
-                ))}
-              </select>
+              {productsLoading ? (
+                <div className="input-field flex h-11 w-full items-center" role="status" aria-label="Loading products">
+                  <span className="h-4 w-40 animate-pulse rounded bg-surface-2" />
+                </div>
+              ) : (
+                <select
+                  className="input-field w-full"
+                  value={selectedProductId}
+                  onChange={(event) => handleProductChange(event.target.value)}
+                >
+                  <option value="">Select a product</option>
+                  {products.map((product) => (
+                    <option key={product.id} value={product.id}>
+                      {product.name}
+                    </option>
+                  ))}
+                </select>
+              )}
             </label>
 
             <label className="space-y-1 text-sm">
