@@ -1,19 +1,21 @@
-import { apiHandler } from "@/lib/api";
-import { requireUser } from "@/lib/auth";
-import { serializeOrder } from "@/lib/orders";
-import { prisma } from "@/lib/prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default apiHandler({
-  async GET(req, res) {
-    const user = await requireUser(req, res);
-    if (!user) return;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({ success: false, message: "Method not allowed" });
+  }
 
-    const orders = await prisma.order.findMany({
-      where: { userId: user.id },
-      include: { items: true },
-      orderBy: { createdAt: "desc" },
-    });
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+  if (!baseUrl) {
+    return res.status(500).json({ success: false, message: "NEXT_PUBLIC_API_URL is not configured" });
+  }
 
-    return res.status(200).json({ success: true, orders: orders.map(serializeOrder) });
-  },
-});
+  const response = await fetch(`${baseUrl}/backend/get_orders.php`, {
+    headers: { Cookie: req.headers.cookie || "" },
+  });
+  const body = await response.text();
+  const contentType = response.headers.get("content-type");
+  if (contentType) res.setHeader("Content-Type", contentType);
+  return res.status(response.status).send(body);
+}
