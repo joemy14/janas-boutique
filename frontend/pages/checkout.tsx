@@ -13,7 +13,18 @@ import { api } from "@/lib/fetcher";
 import { SHIPPING_COST } from "@/lib/products";
 import type { OrderDTO } from "@/types";
 
-const paymentOptions = [{ name: "GCash", logo: "/images/GCASH.png" }];
+const paymentOptions = [{ name: "QR", logo: "/images/GCASH.png" }];
+
+function toDatabaseSize(size: string | null): "S" | "M" | "L" | "XL" | "ONE" {
+  const normalized = size?.trim().toUpperCase() ?? "";
+  if (normalized === "S" || normalized === "M" || normalized === "L" || normalized === "XL" || normalized === "ONE") {
+    return normalized;
+  }
+  if (normalized.startsWith("SMALL")) return "S";
+  if (normalized.startsWith("MEDIUM")) return "M";
+  if (normalized.startsWith("LARGE")) return "L";
+  return "ONE";
+}
 
 const emptyInfo = {
   firstName: "",
@@ -37,7 +48,7 @@ export default function Checkout() {
   const { currentUser, loading: authLoading } = useAuth();
 
   const [info, setInfo] = useState<ShippingInfo>(emptyInfo);
-  const [selectedPayment, setSelectedPayment] = useState("GCash");
+  const [selectedPayment, setSelectedPayment] = useState("QR");
   const [countryOpen, setCountryOpen] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [alert, setAlert] = useState("");
@@ -96,9 +107,24 @@ export default function Checkout() {
     setIsProcessing(true);
     const data = await api<{ order: OrderDTO }>("/api/checkout", {
       body: {
-        ...info,
-        paymentMethod: selectedPayment,
-        items: cartItems.map((item) => ({ productId: item.id, quantity: item.quantity, size: item.size })),
+        firstName: info.firstName,
+        lastName: info.lastName,
+        email: currentUser.email,
+        address: info.address,
+        city: info.city,
+        province: info.province,
+        zip: info.zip,
+        phone: info.phone,
+        items: cartItems.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+          size: toDatabaseSize(item.size),
+          name: item.name,
+          image: item.imageUrl,
+        })),
+        total,
+        shippingCost,
+        paymentMethod: selectedPayment.toLowerCase(),
       },
     });
     setIsProcessing(false);

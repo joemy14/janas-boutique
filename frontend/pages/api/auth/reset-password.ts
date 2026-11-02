@@ -17,7 +17,7 @@ export default apiHandler({
       return res.status(500).json({ success: false, message: "Something went wrong. Please try again." });
     }
 
-    const result = await fetch(`${backendUrl}/reset_password.php`, {
+    const result = await fetch(`${backendUrl}/backend/reset_password.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, password }),

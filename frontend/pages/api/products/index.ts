@@ -9,7 +9,7 @@ export const config = { api: { bodyParser: { sizeLimit: "8mb" } } };
 function backendUrl(file: string) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not configured");
-  return `${baseUrl}/${file}`;
+  return `${baseUrl}/backend/${file}`;
 }
 
 function normalizeProduct(row: Record<string, unknown>): Product {
