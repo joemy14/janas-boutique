@@ -176,7 +176,7 @@ export default function Home() {
 
           <div className="flex flex-col items-start gap-3 md:items-end">
             <h3 className="font-display text-sm font-semibold tracking-[0.3em] text-[#c9a467] uppercase">Payment Method</h3>
-            <Image src="/images/GCASH.png" alt="GCash" width={120} height={48} className="h-10 w-auto rounded-sm object-contain" />
+            <Image src="/images/GCASH.png" alt="QR Payments" width={120} height={48} className="h-10 w-auto rounded-sm object-contain" />
           </div>
         </div>
 

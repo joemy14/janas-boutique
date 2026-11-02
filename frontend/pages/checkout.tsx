@@ -52,7 +52,7 @@ export default function Checkout() {
   const [countryOpen, setCountryOpen] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [alert, setAlert] = useState("");
-  const [showGcashModal, setShowGcashModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const setField = (field: keyof ShippingInfo) => (value: string) => setInfo((prev) => ({ ...prev, [field]: value }));
@@ -74,11 +74,11 @@ export default function Checkout() {
 
   // Disable scroll when modal is open
   useEffect(() => {
-    document.body.style.overflow = showGcashModal ? "hidden" : "auto";
+    document.body.style.overflow = showPaymentModal ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [showGcashModal]);
+  }, [showPaymentModal]);
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingCost = cartItems.length > 0 ? SHIPPING_COST : 0;
@@ -90,7 +90,7 @@ export default function Checkout() {
     if (cartItems.length === 0) return setAlert("Your cart is empty!");
     if (!authLoading && !currentUser) return setAlert("You must be logged in to place an order.");
     setAlert("");
-    setShowGcashModal(true);
+    setShowPaymentModal(true);
   };
 
   const processOrder = async () => {
@@ -130,7 +130,7 @@ export default function Checkout() {
     setIsProcessing(false);
 
     if (!data.success) {
-      setShowGcashModal(false);
+      setShowPaymentModal(false);
       return setAlert(`Error: ${data.message}`);
     }
 
@@ -302,17 +302,17 @@ export default function Checkout() {
         </div>
       </main>
 
-      {/* GCash modal */}
-      {showGcashModal && (
+      {/* QR payment modal */}
+      {showPaymentModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
           <div className="card w-full max-w-sm overflow-hidden shadow-2xl">
             <div className="border-b border-line bg-surface-2 p-5 text-center">
-              <h2 className="font-display text-2xl font-medium">Pay with GCash</h2>
+              <h2 className="font-display text-2xl font-medium">Pay with QR</h2>
               <span className="text-sm text-muted">Jana&apos;s Boutique | janas.work.ph</span>
             </div>
 
             <div className="space-y-4 p-6 text-center">
-              <p className="text-sm text-muted">Send your payment to the following GCash number:</p>
+              <p className="text-sm text-muted">Send your payment to the payment details below:</p>
               <p className="font-display text-2xl tracking-wider">0948-892-9764</p>
               <p className="text-lg">
                 Amount: <span className="font-semibold text-accent">₱{total.toLocaleString()}</span>
@@ -320,13 +320,13 @@ export default function Checkout() {
               <button type="button" onClick={processOrder} disabled={isProcessing} className="btn w-full">
                 {isProcessing ? "Processing..." : "Confirm Payment"}
               </button>
-              <button type="button" onClick={() => setShowGcashModal(false)} className="btn-outline w-full">
+              <button type="button" onClick={() => setShowPaymentModal(false)} className="btn-outline w-full">
                 Cancel
               </button>
             </div>
 
             <div className="flex justify-center border-t border-line p-4">
-              <Image src="/images/GCASH.png" alt="GCash Logo" width={96} height={40} className="h-auto w-24" />
+              <Image src="/images/GCASH.png" alt="QR payment logo" width={96} height={40} className="h-auto w-24" />
             </div>
           </div>
         </div>

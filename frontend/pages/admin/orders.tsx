@@ -5,20 +5,33 @@ import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/fetcher";
 import type { OrderDTO } from "@/types";
 
+type AdminOrder = OrderDTO & { status?: string; payment_method?: string };
+
 const th = "px-4 py-3 text-left font-display text-xs font-semibold tracking-[0.2em] text-muted uppercase";
 const td = "px-4 py-3 align-top";
 
 export default function AdminOrders() {
   const { currentUser } = useAuth();
-  const [orders, setOrders] = useState<OrderDTO[]>([]);
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     if (!currentUser?.isAdmin) return;
-    api<{ orders: OrderDTO[] }>("/api/orders").then((data) => {
+    api<{ orders: AdminOrder[] }>("/api/orders").then((data) => {
       if (data.success) setOrders(data.orders);
       else console.error("Error fetching orders:", data.message);
     });
-  }, [currentUser]);
+  }, [currentUser, refreshKey]);
+
+  const confirmPayment = async (orderId: number) => {
+    const result = await api("/api/admin/confirm-payment", { body: { orderId } });
+    if (!result.success) {
+      window.alert(result.message);
+      return;
+    }
+    window.alert("Payment confirmed successfully.");
+    setRefreshKey((key) => key + 1);
+  };
 
   return (
     <AdminLayout title="Orders">
@@ -47,7 +60,19 @@ export default function AdminOrders() {
             ) : (
               orders.map((order) => (
                 <tr key={order.id} className="hover:bg-surface-2">
-                  <td className={td}>{order.orderNumber}</td>
+                  <td className={td}>
+                    {order.orderNumber}
+                    {order.status?.toLowerCase() === "pending" &&
+                      String(order.paymentMethod ?? order.payment_method ?? "").toLowerCase() === "qr" && (
+                        <button
+                          type="button"
+                          onClick={() => void confirmPayment(order.id)}
+                          className="btn-outline mt-2 !px-3 !py-1.5 !text-xs"
+                        >
+                          Confirm Payment
+                        </button>
+                      )}
+                  </td>
                   <td className={td}>{order.email}</td>
                   <td className={td}>
                     <div className="flex flex-col gap-1">

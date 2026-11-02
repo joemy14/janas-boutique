@@ -14,58 +14,56 @@ if (array_key_exists("user_id", $_GET)) {
     }
 }
 
-$role = $user["role"];
-if ($role === "customer") {
+$sql = "
+    SELECT o.order_id AS id,
+           CONCAT('ORD-', o.order_id) AS orderNumber,
+           COALESCE(u.email, '') AS email,
+           COALESCE(u.first_name, '') AS firstName,
+           COALESCE(u.last_name, '') AS lastName,
+           COALESCE(u.address, '') AS address,
+           '' AS city,
+           '' AS province,
+           '' AS zip,
+           COALESCE(u.phone, '') AS phone,
+           COALESCE((SELECT p.method FROM payments p WHERE p.order_id = o.order_id LIMIT 1), '') AS paymentMethod,
+           0.00 AS shippingCost,
+           o.total_amount AS totalAmount,
+           o.created_at AS createdAt,
+           o.status AS status
+      FROM orders o
+      LEFT JOIN users u ON u.user_id = o.user_id
+";
+
+$filterUserId = null;
+if ($user["role"] === "customer") {
     $filterUserId = (int)$user["id"];
-    $sql = "
-        SELECT o.order_id, o.status, o.total_amount, o.created_at,
-               u.email AS user_email, u.first_name, u.last_name, u.address, u.phone,
-               (SELECT p.method FROM payments p WHERE p.order_id = o.order_id LIMIT 1) AS payment_method
-          FROM orders o
-          LEFT JOIN users u ON u.user_id = o.user_id
-         WHERE o.user_id = ?
-         ORDER BY o.created_at DESC
-    ";
-} elseif ($role === "admin" || $role === "staff") {
+    $sql .= " WHERE o.user_id = ?";
+} elseif ($user["role"] === "admin" || $user["role"] === "staff") {
     if ($requestedUserId !== null) {
         $filterUserId = (int)$requestedUserId;
-        $sql = "
-            SELECT o.order_id, o.status, o.total_amount, o.created_at,
-                   u.email AS user_email, u.first_name, u.last_name, u.address, u.phone,
-                   (SELECT p.method FROM payments p WHERE p.order_id = o.order_id LIMIT 1) AS payment_method
-              FROM orders o
-              LEFT JOIN users u ON u.user_id = o.user_id
-             WHERE o.user_id = ?
-             ORDER BY o.created_at DESC
-        ";
-    } else {
-        $sql = "
-            SELECT o.order_id, o.status, o.total_amount, o.created_at,
-                   u.email AS user_email, u.first_name, u.last_name, u.address, u.phone,
-                   (SELECT p.method FROM payments p WHERE p.order_id = o.order_id LIMIT 1) AS payment_method
-              FROM orders o
-              LEFT JOIN users u ON u.user_id = o.user_id
-             ORDER BY o.created_at DESC
-        ";
+        $sql .= " WHERE o.user_id = ?";
     }
 } else {
     http_response_code(403);
     echo json_encode(["success" => false, "message" => "Forbidden"]);
     exit;
 }
+$sql .= " ORDER BY o.created_at DESC";
 
 require_once __DIR__ . "/db.php";
 $orderStmt = $conn->prepare($sql);
 if (!$orderStmt) {
-    echo json_encode(["orders" => [], "message" => $conn->error]);
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Unable to fetch orders."]);
     $conn->close();
     exit;
 }
-if (isset($filterUserId)) {
+if ($filterUserId !== null) {
     $orderStmt->bind_param("i", $filterUserId);
 }
 if (!$orderStmt->execute()) {
-    echo json_encode(["orders" => [], "message" => $orderStmt->error]);
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Unable to fetch orders."]);
     $orderStmt->close();
     $conn->close();
     exit;
@@ -73,14 +71,17 @@ if (!$orderStmt->execute()) {
 
 $result = $orderStmt->get_result();
 $itemStmt = $conn->prepare(
-    "SELECT p.product_id AS id, p.name, p.image_path AS image, oi.quantity
+    "SELECT oi.order_item_id AS id, ps.product_id AS productId,
+            p.name, p.image_path AS imageUrl, ps.size, oi.quantity,
+            oi.unit_price AS unitPrice
        FROM order_items oi
        JOIN product_sizes ps ON ps.product_size_id = oi.product_size_id
        JOIN products p ON p.product_id = ps.product_id
       WHERE oi.order_id = ?"
 );
 if (!$itemStmt) {
-    echo json_encode(["orders" => [], "message" => $conn->error]);
+    http_response_code(500);
+    echo json_encode(["success" => false, "message" => "Unable to fetch order items."]);
     $orderStmt->close();
     $conn->close();
     exit;
@@ -88,44 +89,35 @@ if (!$itemStmt) {
 
 $orders = [];
 while ($row = $result->fetch_assoc()) {
-    $id = (int)$row["order_id"];
-    $itemStmt->bind_param("i", $id);
+    $orderId = (int)$row["id"];
+    $itemStmt->bind_param("i", $orderId);
     if (!$itemStmt->execute()) {
-        echo json_encode(["orders" => [], "message" => $itemStmt->error]);
+        http_response_code(500);
+        echo json_encode(["success" => false, "message" => "Unable to fetch order items."]);
         $itemStmt->close();
         $orderStmt->close();
         $conn->close();
         exit;
     }
 
-    $items = $itemStmt->get_result();
-    $products = [];
-    while ($item = $items->fetch_assoc()) {
+    $itemsResult = $itemStmt->get_result();
+    $items = [];
+    while ($item = $itemsResult->fetch_assoc()) {
         $item["id"] = (int)$item["id"];
+        $item["productId"] = (int)$item["productId"];
         $item["quantity"] = (int)$item["quantity"];
-        $products[] = $item;
+        $item["unitPrice"] = (float)$item["unitPrice"];
+        $items[] = $item;
     }
 
-    $orders[] = [
-        "id"             => $id,
-        "user_email"     => $row["user_email"] ?? "Walk-in customer",
-        "products"       => $products,
-        "total_amount"   => (float)$row["total_amount"],
-        "shipping_cost"  => 0,
-        "payment_method" => $row["payment_method"] ?? "",
-        "purchase_date"  => $row["created_at"],
-        "first_name"     => $row["first_name"] ?? "",
-        "last_name"      => $row["last_name"] ?? "",
-        "address"        => $row["address"] ?? "",
-        "city"           => "",
-        "province"       => "",
-        "zip"            => "",
-        "phone"          => $row["phone"] ?? "",
-        "status"         => $row["status"],
-    ];
+    $row["id"] = $orderId;
+    $row["shippingCost"] = (float)$row["shippingCost"];
+    $row["totalAmount"] = (float)$row["totalAmount"];
+    $row["items"] = $items;
+    $orders[] = $row;
 }
 
-echo json_encode(["orders" => $orders]);
+echo json_encode(["success" => true, "orders" => $orders]);
 $itemStmt->close();
 $orderStmt->close();
 $conn->close();
