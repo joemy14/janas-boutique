@@ -15,9 +15,7 @@ error_reporting(E_ALL);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require __DIR__ . '/vendor/phpmailer/phpmailer/src/Exception.php';
-require __DIR__ . '/vendor/phpmailer/phpmailer/src/PHPMailer.php';
-require __DIR__ . '/vendor/phpmailer/phpmailer/src/SMTP.php';
+require __DIR__ . '/vendor/autoload.php';
 
 try {
     require_once __DIR__ . "/db.php";
@@ -54,15 +52,15 @@ try {
     $resetLink = "http://localhost:3000/resetpassword?token=$token";
 
     // Send email
-    $mail = new PHPMailer(true);
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true);
     $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
+    $mail->Host = getenv('SMTP_HOST') ?: 'smtp-relay.brevo.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'jana.workplace.ph@gmail.com';
-    $mail->Password = 'lfbjtuowolvcwidj';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
-    $mail->setFrom('no-reply@yourdomain.com', "Jana's Boutique");
+    $mail->Username = getenv('SMTP_USER');
+    $mail->Password = getenv('SMTP_PASS');
+    $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = getenv('SMTP_PORT') ?: 587;
+    $mail->setFrom(getenv('SMTP_USER'), "Jana's Boutique");
     $mail->addAddress($email);
     $mail->isHTML(true);
     $mail->Subject = 'Password Reset Request';

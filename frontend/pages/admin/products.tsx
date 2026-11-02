@@ -96,8 +96,8 @@ export default function AdminProducts() {
 
   const handleImage = async (file: File | undefined) => {
     if (!file) return update({ image: null, imagePreviewUrl: null });
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Image must be 5 MB or smaller.");
+    if (file.size >= 2 * 1024 * 1024) {
+      alert("Image must be less than 2MB");
       return;
     }
     update({ imagePreviewUrl: URL.createObjectURL(file) });
@@ -324,7 +324,7 @@ function ProductModal({ form, saving, onChange, onImage, onCancel, onSave, onDel
             required={!form.imageUrl}
             onChange={(e) => {
               const file = e.target.files?.[0];
-              if (file && file.size <= 5 * 1024 * 1024) setImageFileName(file.name);
+              if (file && file.size < 2 * 1024 * 1024) setImageFileName(file.name);
               else setImageFileName("");
               onImage(file);
             }}

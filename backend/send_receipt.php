@@ -96,17 +96,17 @@ $body = "
 
 
 // Send email
-$mail = new PHPMailer(true);
+$mail = new PHPMailer\PHPMailer\PHPMailer(true);
 try {
     $mail->isSMTP();
-    $mail->Host = "smtp.gmail.com";
+    $mail->Host = getenv('SMTP_HOST') ?: 'smtp-relay.brevo.com';
     $mail->SMTPAuth = true;
-    $mail->Username = "jana.workplace.ph@gmail.com";  
-    $mail->Password = "lfbjtuowolvcwidj"; // Gmail App Password
-    $mail->SMTPSecure = "tls";
-    $mail->Port = 587;
+    $mail->Username = getenv('SMTP_USER');
+    $mail->Password = getenv('SMTP_PASS');
+    $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port = getenv('SMTP_PORT') ?: 587;
 
-    $mail->setFrom("jana.workplace.ph@gmail.com", "Jana's Boutique");
+    $mail->setFrom(getenv('SMTP_USER'), "Jana's Boutique");
     $mail->addAddress($email, $name);
     $mail->isHTML(true);
     $mail->Subject = "Your Receipt - Order #$orderId";
