@@ -48,6 +48,16 @@ The PHP database connection is configured in `backend/db.php` (default local MyS
 - `frontend/` — Next.js application
 - `docs/handoff.md` — current status, known limits, and suggested next work
 
+## Documentation
+
+- [Project handoff](docs/handoff.md)
+- [Entity-relationship diagram](docs/erd.md)
+- [Data dictionary](docs/data-dictionary.md)
+- [Normalization notes](docs/normalization.md)
+- [Query optimization](docs/query-optimization.md)
+- [Transaction demo](docs/transaction-demo.md)
+- [User guide](docs/user-guide.md)
+
 ## Current limits
 
 - Done: login and registration through PHP (verified); products routes through PHP (verified: `/tops` and `/api/products` show database data); admin login works.
