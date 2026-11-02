@@ -1,17 +1,21 @@
-import { apiHandler } from "@/lib/api";
-import { requireAdmin } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default apiHandler({
-  async GET(req, res) {
-    if (!(await requireAdmin(req, res))) return;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({ success: false, message: "Method not allowed" });
+  }
 
-    const customers = await prisma.user.findMany({
-      where: { isAdmin: false },
-      select: { id: true, firstName: true, lastName: true, email: true },
-      orderBy: { createdAt: "desc" },
-    });
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+  if (!baseUrl) {
+    return res.status(500).json({ success: false, message: "NEXT_PUBLIC_API_URL is not configured" });
+  }
 
-    return res.status(200).json({ success: true, customers });
-  },
-});
+  const response = await fetch(`${baseUrl}/backend/get_customers_details.php`, {
+    headers: { Cookie: req.headers.cookie || "" },
+  });
+  const body = await response.text();
+  const contentType = response.headers.get("content-type");
+  if (contentType) res.setHeader("Content-Type", contentType);
+  return res.status(response.status).send(body);
+}

@@ -1,32 +1,25 @@
-import { apiHandler } from "@/lib/api";
-import { requireAdmin } from "@/lib/auth";
-import { serializeOrder } from "@/lib/orders";
-import { prisma } from "@/lib/prisma";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-export default apiHandler({
-  async GET(req, res) {
-    if (!(await requireAdmin(req, res))) return;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({ success: false, message: "Method not allowed" });
+  }
 
-    const id = Number(req.query.id);
-    if (!Number.isInteger(id)) {
-      return res.status(400).json({ success: false, message: "Invalid customer id." });
-    }
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
+  if (!baseUrl) {
+    return res.status(500).json({ success: false, message: "NEXT_PUBLIC_API_URL is not configured" });
+  }
 
-    const customer = await prisma.user.findFirst({
-      where: { id, isAdmin: false },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        orders: { include: { items: true }, orderBy: { createdAt: "desc" } },
-      },
-    });
-    if (!customer) {
-      return res.status(404).json({ success: false, message: "Customer not found." });
-    }
+  const phpUrl = new URL(`${baseUrl}/backend/get_customers_details.php`);
+  const customerId = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  phpUrl.searchParams.set("id", customerId ?? "");
 
-    const { orders, ...profile } = customer;
-    return res.status(200).json({ success: true, customer: profile, orders: orders.map(serializeOrder) });
-  },
-});
+  const response = await fetch(phpUrl, {
+    headers: { Cookie: req.headers.cookie || "" },
+  });
+  const body = await response.text();
+  const contentType = response.headers.get("content-type");
+  if (contentType) res.setHeader("Content-Type", contentType);
+  return res.status(response.status).send(body);
+}
