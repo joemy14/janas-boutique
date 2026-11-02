@@ -3,12 +3,11 @@
 ## Current stage
 
 - Done: login and registration through PHP (verified). Products routes through PHP (verified: `/tops` and `/api/products` show database data). Admin login works.
-- In progress: checkout. `backend/checkout.php` is written (accepts province, zip, items; inserts orders, order_items, one pending payment; the trigger lowers stock). The orders INSERT was changed to store `total_amount`. NOT TESTED.
-  - Pending check: bind_param for the orders INSERT must be `"id"` with `$userId` and `$total`.
-- Not started: orders list, customer order history, admin stats, reports, QR payment in the footer and checkout (default still "GCash"), in-store staff sales page, remove `lib/prisma.ts` stub, stored procedures and triggers for the rubric, EXPLAIN examples, transaction demo, ERD and data dictionary, deployment.
+- In progress: checkout. `backend/checkout.php` is written and the orders INSERT binds `"id"` with `$userId` and `$total` (confirmed). It inserts orders, order_items, and one pending payment; the AFTER INSERT trigger lowers stock and rewrites `orders.total_amount` from `fn_order_total`. NOT yet exercised end-to-end in the UI.
+- Not started: orders list, customer order history, admin stats, reports, QR payment in the footer and checkout (default still "GCash"), in-store staff sales page, remove `lib/prisma.ts` stub, EXPLAIN examples, transaction demo, ERD and data dictionary, user guide, deployment.
 - Build: `npm run build` is blocked by the `lib/prisma.ts` stub and other routes that still import Prisma (checkout, orders, customers, product images, stats).
-
-The intended fresh setup imports `database/schema.sql`, but **that file is missing from this checkout**. Obtain the authoritative schema before relying on a clean database setup.
+- Schema: committed at `database/schema.sql` (MySQL 8 / MariaDB 10.4+, utf8mb4). Contains `v_low_stock`, `fn_order_total`, both `order_items` triggers, `sp_create_order`, `sp_cancel_order`, and indexes `idx_orders_user`, `idx_order_items_order`, `idx_products_category`. Import it in phpMyAdmin before running the app.
+- Known issue for Stage 2: `backend/get_orders.php` returns ALL orders with no user_id or role filter. Must be fixed before wiring `/api/orders/mine.ts`.
 
 ## New-computer setup
 
