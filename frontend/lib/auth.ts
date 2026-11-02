@@ -81,7 +81,7 @@ export async function loginWithBackend(email: string, password: string) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "");
   if (!baseUrl) throw new Error("NEXT_PUBLIC_API_URL is not configured");
 
-  const response = await fetch(`${baseUrl}/login.php`, {
+  const response = await fetch(`${baseUrl}/backend/login.php`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
